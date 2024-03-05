@@ -1,0 +1,67 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Card from "../components/Card.astro";
+---
+<!-- Componente principal que representa la página de camisetas -->
+<Layout title="Camisetas Emblem">
+    {/* Sección principal de la página */}
+    <section
+        class="bg-gradient-to-l from-rose-100 to-teal-100 relative min-h-screen pt-8 pb-8 md:pt-0 md:pb-0 md:pr-16 md:pl-16 interFont text-base lg:text-lg"
+    >
+        {/* Título de la sección */}
+        <h1 class="text-5xl text-left md:text-center p-4 cabinetGrotesk-bold pt-10">Nuestras prendas</h1>
+
+        {/* Contenedor para las tarjetas de las camisetas */}
+        <article
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-content-center pt-10 md:pb-20 gap-10 md:gap-5 pb-5 mr-4 ml-4"
+        >
+            {/* Tarjeta para la Camiseta astronaut black & green */}
+            <Card
+                nombre="Camiseta astronaut black & green"
+                precio="22"
+                img="../public/img/emblem-green.png"
+                link="/570685e6-7107-4d5f-8c8c-564cebc0bd5c"
+            />
+
+            {/* Tarjeta para la Camiseta astronaut white & purple */}
+            <Card
+                nombre="Camiseta astronaut white & purple"
+                precio="22"
+                img="../public/img/emblem-purple.png"
+                link="/3f5c3dc6-4ae3-4a56-8ab0-a90cd211a090"
+            />
+
+            {/* Tarjeta para la Camiseta emblem ovni black & red */}
+            <Card
+                nombre="Camiseta emblem ovni black & red"
+                precio="25"
+                img="../public/img/emblem-red.png"
+                link="/8642080e-6956-4106-b30a-4694c5631d1b"
+            />
+
+            {/* Tarjeta para la Camiseta moon white & purple */}
+            <Card
+                nombre="Camiseta moon white & purple"
+                precio="28"
+                img="../public/img/emblem-moon-purple.png"
+                link="/3e9d0a9c-cb71-4145-ba69-1a2b70dfd89b"
+            />
+
+            {/* Tarjeta para la Camiseta emblem asteroid white */}
+            <Card
+                nombre="Camiseta emblem asteroid white"
+                precio="22"
+                img="../public/img/emblem-asteroid.png"
+                link="/74800d01-cb2a-4633-b4ef-c53096cab299"
+            />
+
+            {/* Tarjeta para la Camiseta emblem zero gravity white */}
+            <Card
+                nombre="Camiseta emblem zero gravity white"
+                precio="25"
+                img="../public/img/emblem-barca.png"
+                link="/745f5501-13b1-453b-8230-e8016f186956"
+            />
+        </article>
+    </section>
+</Layout>

@@ -1,0 +1,43 @@
+---
+// Este archivo importa un componente de diseño (Layout), utiliza el módulo 'astro:transitions' y
+// accede a las propiedades proporcionadas por Astro para mostrar información sobre una sección.
+
+// Importación del componente de diseño
+import Layout from "./Layout.astro";
+
+// Importación del módulo 'astro:transitions'
+import { ViewTransitions } from "astro:transitions";
+
+// Desestructuración de la propiedad 'frontmatter' proporcionada por Astro
+const { frontmatter } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{frontmatter.title}</title>
+    <!-- Inclusión del módulo de transiciones de Astro -->
+    <ViewTransitions />
+  </head>
+  <body>
+    <!-- Uso del componente de diseño 'Layout' con un título personalizado -->
+    <Layout title={frontmatter.title}>
+      <!-- Sección principal con estilos de fondo y espaciado -->
+      <section
+        class="bg-gradient-to-l from-rose-100 to-teal-100 pt-10 pb-10 p-6 text-left"
+      >
+        <!-- Contenedor principal con estilos de altura y ancho máximo -->
+        <section
+          class="min-h-screen max-w-3xl flex flex-col justify-center items-center gap-8 m-auto interFont text-base"
+        >
+          <!-- Título de la sección obtenido de las propiedades -->
+          <h1 class="text-5xl cabinetGrotesk-bold">{frontmatter.title}</h1>
+          <!-- Slot para contenido adicional proporcionado por otras páginas o componentes -->
+          <slot />
+        </section>
+      </section>
+    </Layout>
+  </body>
+</html>
