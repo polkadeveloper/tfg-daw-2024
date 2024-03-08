@@ -1,46 +1,71 @@
 ---
-import Card from '../components/Card.astro';
-import Layout from '../layouts/Layout.astro';
-
+import Card from "@/components/Card.astro";
+import Layout from "@/layouts/Layout.astro";
 ---
 
 <Layout title="Welcome to Astro.">
-    <section class="pt-5">
-    <h1 class="text-6xl md:text-7xl m-4 md:m-6 text-left md:text-center cabinetGrotesk-bold">Emblem shop</h1>
-    <p class="text-2xl md:text-3xl m-4 md:m-6 text-left md:text-center cabinetGrotesk-medium">Ropa <span class="text-purple-500">Emblem</span>, donde cada prenda cuenta una historia de moda <span class="text-green-500">asequible y vanguardista.</span></p>
-    </section>
+  <section class="pt-5">
+    <h1
+      class="text-6xl md:text-7xl m-4 md:m-6 text-left md:text-center cabinetGrotesk-bold"
+    >
+      Emblem shop
+    </h1>
+    <p
+      class="text-2xl md:text-3xl m-4 md:m-6 text-left md:text-center cabinetGrotesk-medium"
+    >
+      Ropa <span class="text-purple-500">Emblem</span>, donde cada prenda cuenta
+      una historia de moda <span class="text-green-500"
+        >asequible y vanguardista.</span>
+    </p>
+  </section>
 
-   <h2 class="m-4 md:m-6 xl:ml-52 2xl:ml-60 text-left cabinetGrotesk-bold text-xl md:text-2xl pt-10">Top Ventas</h2>
-    <section id="seccionTopVentas" class="pb-20 mr-4 ml-4 md:gap-[1rem] md:mr-3 md:ml-3 lg:gap-5 xl:gap-12 relative">
-        <Card nombre="Camiseta astronaut black & green" precio="22" img="../public/img/emblem-green.png" link="/570685e6-7107-4d5f-8c8c-564cebc0bd5c">
-        </Card>
-        <Card nombre="Camiseta astronaut white & purple" precio="22" img="../public/img/emblem-purple.png" link="/3f5c3dc6-4ae3-4a56-8ab0-a90cd211a090">
-        </Card>
-        <Card nombre="Camiseta emblem ovni black & red" precio="25" img="../public/img/emblem-red.png" link="/8642080e-6956-4106-b30a-4694c5631d1b">
-        </Card>
-        <div class="absolute top-0 -z-10 bg-green-300 w-full h-full" style="filter: blur(250px);"></div>
-    </section>
+  <h2
+    class="m-4 md:m-6 xl:ml-52 2xl:ml-60 text-left cabinetGrotesk-bold text-xl md:text-2xl pt-10"
+  >
+    Top Ventas
+  </h2>
+  <section
+    id="seccionTopVentas"
+    class="pb-20 mr-4 ml-4 md:gap-[1rem] md:mr-3 md:ml-3 lg:gap-5 xl:gap-12 relative"
+  >
+    <Card
+      nombre="Camiseta astronaut black & green"
+      precio="22"
+      img="../public/img/emblem-green.png"
+      link="/1"
+    />
+    <Card
+      nombre="Camiseta astronaut white & purple"
+      precio="22"
+      img="../public/img/emblem-purple.png"
+      link="/2"
+    />
+    <Card
+      nombre="Camiseta emblem ovni black & red"
+      precio="25"
+      img="../public/img/emblem-red.png"
+      link="/3"
+    />
+    <div
+      class="absolute top-0 -z-10 bg-green-300 w-full h-full"
+      style="filter: blur(250px);"
+    >
+    </div>
+  </section>
 </Layout>
 
 <style>
-
-#seccionTopVentas {
-
+  #seccionTopVentas {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-}
+  }
 
-@media (max-width: 767px) {
-
+  @media (max-width: 767px) {
     #seccionTopVentas {
-
-        flex-direction: column;
-        gap: 1rem;
-
+      flex-direction: column;
+      gap: 1rem;
     }
-
-}
-
+  }
 </style>
