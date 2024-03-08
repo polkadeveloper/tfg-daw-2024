@@ -3,6 +3,10 @@ import Layout from "@/layouts/Layout.astro";
 import { camisetas } from "@/services/itemsInfo.ts";
 import { arrayTallasPorItemId } from "@/services/sizesInfo.ts";
 
+// -> Exportamos la constante prerender con valor true para que no actue el SSR
+export const prerender = true;
+
+// -> Exportamos la función getStaticPaths para obtener las rutas de los productos
 export async function getStaticPaths() {
   return camisetas.map(
     ({
@@ -31,6 +35,7 @@ export async function getStaticPaths() {
 
 // Desestructuración de propiedades proporcionadas por Astro
 const { id } = Astro.params;
+// Desestructuración de propiedades proporcionadas por Camisetas
 const {
   collectionId,
   itemName,
@@ -102,11 +107,6 @@ const {
               class="bg-gray-200 hover:bg-gray-300 text-black py-1 px-1 border-2 border-black rounded-lg"
             >
               <!-- Mapeo de opciones de tallas desde las propiedades -->
-              <!-- {
-                Astro.props.tallas.map((talla) => (
-                  <option value={talla}>{talla}</option>
-                ))
-              } -->
 
               {
                 arrayTallasPorItemId[id - 1].tallas.map((talla) => (
