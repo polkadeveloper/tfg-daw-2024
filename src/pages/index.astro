@@ -1,9 +1,12 @@
 ---
 import Card from "@/components/Card.astro";
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
 import Layout from "@/layouts/Layout.astro";
 ---
 
 <Layout title="Welcome to Astro.">
+  <Header />
   <section class="pt-5">
     <h1
       class="text-6xl md:text-7xl m-4 md:m-6 text-left md:text-center cabinetGrotesk-bold"
@@ -15,7 +18,8 @@ import Layout from "@/layouts/Layout.astro";
     >
       Ropa <span class="text-purple-500">Emblem</span>, donde cada prenda cuenta
       una historia de moda <span class="text-green-500"
-        >asequible y vanguardista.</span>
+        >asequible y vanguardista.</span
+      >
     </p>
   </section>
 
@@ -52,6 +56,7 @@ import Layout from "@/layouts/Layout.astro";
     >
     </div>
   </section>
+  <Footer />
 </Layout>
 
 <style>
