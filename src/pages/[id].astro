@@ -1,91 +1,48 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from "@/layouts/Layout.astro";
+import { camisetas } from "@/services/itemsInfo.ts";
+import { arrayTallasPorItemId } from "@/services/sizesInfo.ts";
 
 export async function getStaticPaths() {
-  return [
-    {
-      params: { id: "570685e6-7107-4d5f-8c8c-564cebc0bd5c" },
-
-      props: {
-        nombre: "Camiseta astronaut black & green",
-        precio: 22,
-        imgFront: "../../public/img/emblem-green.png",
-        img: "../../public/img/emblem-green.png",
-        tallas: ["S", "M", "L", "XL"],
-        descripcion:
-          "El color negro dominante se combina con detalles en verde, creando un contraste llamativo y fresco. Ideal para quienes buscan un estilo contemporáneo con un toque cósmico.",
-      },
-    },
-    {
-      params: { id: "3f5c3dc6-4ae3-4a56-8ab0-a90cd211a090" },
-      props: {
-        nombre: "Camiseta astronaut white & purple",
-        precio: 22,
-        imgFront: "../../public/img/emblem-purple.png",
-        img: "../../public/img/emblem-purple.png",
-        tallas: ["XS", "S", "M", "L", "XL"],
-        descripcion:
-          "La combinación de colores blanco y morado evoca una sensación futurista y fresca. Perfecta para aquellos que buscan expresar su amor por la exploración espacial y la moda contemporánea.",
-      },
-    },
-    {
-      params: { id: "8642080e-6956-4106-b30a-4694c5631d1b" },
-      props: {
-        nombre: "Camiseta emblem ovni black & red",
-        precio: 25,
-        imgFront: "../../public/img/emblem-red.png",
-        img: "../../public/img/emblem-red.png",
-        tallas: ["XS", "S", "M", "L"],
-        descripcion:
-          "El color negro predominante se fusiona con detalles en rojo, creando un contraste llamativo y único. Perfecta para aquellos que buscan un estilo moderno con un toque intrigante inspirado en ovnis y el misterio del espacio.",
-      },
-    },
-    {
-      params: { id: "3e9d0a9c-cb71-4145-ba69-1a2b70dfd89b" },
-      props: {
-        nombre: "Camiseta moon white & purple",
-        precio: 28,
-        imgFront: "../../public/img/emblem-moon-purple.png",
-        img: "../../public/img/emblem-moon-purple.png",
-        tallas: ["XS", "S", "M", "L"],
-        descripcion:
-          "La combinación de colores blanco y morado evoca una sensación futurista y fresca. Perfecta para aquellos que buscan expresar su amor por la exploración espacial y la moda contemporánea.",
-      },
-    },
-    {
-      params: { id: "74800d01-cb2a-4633-b4ef-c53096cab299" },
-      props: {
-        nombre: "Camiseta emblem asteroid white",
-        precio: 22,
-        imgFront: "../../public/img/emblem-front.png",
-        img: "../../public/img/emblem-asteroid.png",
-        tallas: ["XS", "S", "M", "L"],
-        descripcion:
-          "La combinación de colores blanco y morado evoca una sensación futurista y fresca. Perfecta para aquellos que buscan expresar su amor por la exploración espacial y la moda contemporánea.",
-      },
-    },
-    {
-      params: { id: "745f5501-13b1-453b-8230-e8016f186956" },
-      props: {
-        nombre: "Camiseta emblem zero gravity white",
-        precio: 25,
-        imgFront: "../../public/img/emblem-barca.png",
-        img: "../../public/img/emblem-barca.png",
-        tallas: ["XS", "S", "M", "L"],
-        descripcion:
-          "La combinación de colores blanco y morado evoca una sensación futurista y fresca. Perfecta para aquellos que buscan expresar su amor por la exploración espacial y la moda contemporánea.",
-      },
-    },
-  ];
+  return camisetas.map(
+    ({
+      itemId,
+      collectionId,
+      itemName,
+      itemDescription,
+      itemPrice,
+      itemDiscounted,
+      itemImgName,
+    }) => {
+      return {
+        params: { id: itemId },
+        props: {
+          collectionId,
+          itemName,
+          itemDescription,
+          itemPrice,
+          itemDiscounted,
+          itemImgName,
+        },
+      };
+    }
+  );
 }
 
 // Desestructuración de propiedades proporcionadas por Astro
 const { id } = Astro.params;
-const { nombre, precio, imgFront, img, tallas, descripcion } = Astro.props;
+const {
+  collectionId,
+  itemName,
+  itemDescription,
+  itemPrice,
+  itemDiscounted,
+  itemImgName,
+} = Astro.props;
 ---
 
 <!-- Componente principal que utiliza las propiedades del producto -->
-<Layout title={nombre}>
+<Layout title={itemName}>
   <!-- Sección Camiseta -->
   <section
     class="bg-gradient-to-l from-rose-100 to-teal-100 relative min-h-[70vh] p-4 pt-12 pb-10 flex flex-col md:flex-row md:justify-center md:items-center interFont text-base lg:text-lg"
@@ -98,19 +55,21 @@ const { nombre, precio, imgFront, img, tallas, descripcion } = Astro.props;
         class="m-4 w-72 h-52 md:w-[400px] md:h-64 lg:w-[425px] lg:h-[300px] xl:w-[450px] xl:h-[350px] relative"
         id="camisetaContainer"
       >
-        <!-- Imagen frontal de la camiseta -->
-        <img
-          src={img}
-          alt=""
-          class="w-full h-full transition-transform duration-300 transform"
-          id="frontImage"
-        />
         <!-- Imagen trasera de la camiseta -->
         <img
-          src={imgFront}
+          src=`https://res.cloudinary.com/dle7lr00f/image/upload/v1709637639/${itemImgName}-back.webp`
+          alt=""
+          class="w-full h-full transition-transform duration-300 transform"
+          id="backImage"
+          transition:name={`https://res.cloudinary.com/dle7lr00f/image/upload/v1709637639/${itemImgName}-back`}
+        />
+
+        <!-- Imagen frontal de la camiseta -->
+        <img
+          src=`https://res.cloudinary.com/dle7lr00f/image/upload/v1709637639/${itemImgName}-front.webp`
           alt=""
           class="w-full h-full transition-transform duration-300 transform absolute top-0 left-0 opacity-0"
-          id="backImage"
+          id="frontImage"
         />
       </div>
 
@@ -121,13 +80,13 @@ const { nombre, precio, imgFront, img, tallas, descripcion } = Astro.props;
         <!-- Nombre del producto -->
         <h1
           class="text-2xl lg:text-3xl xl:text-4xl lg:text-center cabinetGrotesk-bold"
-          transition:name={`${nombre}`}
+          transition:name={`${itemName}`}
         >
-          {nombre}
+          {itemName}
         </h1>
         <!-- Precio del producto -->
-        <p transition:name={`${precio}`}>
-          <span class="text-purple-800">{precio}€</span>
+        <p transition:name={`${itemPrice + itemName}`}>
+          <span class="text-purple-800">{itemPrice}€</span>
         </p>
 
         <!-- Sección Tallas -->
@@ -135,26 +94,51 @@ const { nombre, precio, imgFront, img, tallas, descripcion } = Astro.props;
           <p>Tallas:</p>
 
           <!-- Sección Botones Tallas -->
-          <div id="btn-Tallas" class="flex text-xs">
+          <div
+            id="btn-Tallas"
+            class="flex justify-center items-center gap-5 text-xs"
+          >
             <select
               class="bg-gray-200 hover:bg-gray-300 text-black py-1 px-1 border-2 border-black rounded-lg"
             >
               <!-- Mapeo de opciones de tallas desde las propiedades -->
-              {
+              <!-- {
                 Astro.props.tallas.map((talla) => (
                   <option value={talla}>{talla}</option>
                 ))
+              } -->
+
+              {
+                arrayTallasPorItemId[id - 1].tallas.map((talla) => (
+                  <option
+                    value={talla.sizeName}
+                    disabled={talla.stockQuantity <= 5}
+                  >
+                    {talla.sizeName}{" "}
+                    {talla.stockQuantity <= 5 ? "(Agotado)" : ""}
+                  </option>
+                ))
               }
             </select>
+
+            <p class="text-red-500 text-lg cabinetGrotesk-bold">
+              {
+                arrayTallasPorItemId[id - 1].tallas.every(
+                  (talla) => talla.outOfStock === 1
+                )
+                  ? "Producto Agotado"
+                  : ""
+              }
+            </p>
           </div>
         </div>
 
         <!-- Descripción del producto -->
         <p
           class="max-w-sm lg:max-w-xl xl:max-w-2xl"
-          transition:name={`${descripcion}`}
+          transition:name={`${itemDescription}`}
         >
-          {descripcion}
+          {itemDescription}
         </p>
 
         <!-- Lista de características del producto -->
@@ -188,11 +172,11 @@ const { nombre, precio, imgFront, img, tallas, descripcion } = Astro.props;
 
 <!-- Estilos CSS para la sección de cambio de imagen al hacer hover -->
 <style>
-  #camisetaContainer:hover #frontImage {
+  #camisetaContainer:hover #backImage {
     opacity: 0; /* Oculta la imagen frontal al hacer hover */
   }
 
-  #camisetaContainer:hover #backImage {
+  #camisetaContainer:hover #frontImage {
     opacity: 1; /* Muestra la imagen trasera al hacer hover */
   }
 </style>
