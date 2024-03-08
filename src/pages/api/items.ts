@@ -4,7 +4,7 @@ import { type APIRoute } from "astro";
 import mysql from "mysql2/promise";
 
 // Creamos la conexión a la base de datos
-const connection = await mysql.createConnection({
+export const connection = await mysql.createConnection({
   host: "localhost",
   user: "root",
   database: "tfg-daw-2024",
