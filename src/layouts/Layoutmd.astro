@@ -26,7 +26,6 @@ const { frontmatter } = Astro.props;
   <body>
     <!-- Uso del componente de diseño 'Layout' con un título personalizado -->
     <Layout title={frontmatter.title}>
-      <Header />
       <!-- Sección principal con estilos de fondo y espaciado -->
       <section
         class="bg-gradient-to-l from-rose-100 to-teal-100 pt-10 pb-10 p-6 text-left"
@@ -36,12 +35,11 @@ const { frontmatter } = Astro.props;
           class="min-h-screen max-w-3xl flex flex-col justify-center items-center gap-8 m-auto interFont text-base"
         >
           <!-- Título de la sección obtenido de las propiedades -->
-          <h1 class="text-5xl cabinetGrotesk-bold">{frontmatter.title}</h1>
+          <h1 class="text-5xl font-cabinetGroteskBold">{frontmatter.title}</h1>
           <!-- Slot para contenido adicional proporcionado por otras páginas o componentes -->
           <slot />
         </section>
       </section>
-      <Footer />
     </Layout>
   </body>
 </html>
