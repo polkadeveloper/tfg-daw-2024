@@ -1,15 +1,24 @@
 ---
 import Card from "@/components/Card.astro";
-import Footer from "@/components/Footer.astro";
-import Header from "@/components/Header.astro";
 import Layout from "@/layouts/Layout.astro";
+import { Toast } from "@/components/Toast.tsx";
+const ip = Astro.clientAddress;
+console.log(ip);
+const user = Astro.locals.user;
+const session = Astro.locals.session;
+if (!user) {
+  // return Astro.redirect("/login");
+  console.log("No hay usuario");
+} else {
+  console.log(user);
+  console.log(session);
+}
 ---
 
-<Layout title="Welcome to Astro.">
-  <Header />
+<Layout title="Emblem - Inicio">
   <section class="pt-5">
     <h1
-      class="text-6xl md:text-7xl m-4 md:m-6 text-left md:text-center cabinetGrotesk-bold"
+      class="text-6xl md:text-7xl m-4 md:m-6 text-left md:text-center font-cabinetGroteskBold"
     >
       Emblem shop
     </h1>
@@ -24,7 +33,7 @@ import Layout from "@/layouts/Layout.astro";
   </section>
 
   <h2
-    class="m-4 md:m-6 xl:ml-52 2xl:ml-60 text-left cabinetGrotesk-bold text-xl md:text-2xl pt-10"
+    class="m-4 md:m-6 xl:ml-52 2xl:ml-60 text-left font-cabinetGroteskBold text-xl md:text-2xl pt-10"
   >
     Top Ventas
   </h2>
@@ -56,7 +65,11 @@ import Layout from "@/layouts/Layout.astro";
     >
     </div>
   </section>
-  <Footer />
+  {
+    Astro.url.searchParams.get("account") === "created" && (
+      <Toast direction="top-right" theme="dark" client:load />
+    )
+  }
 </Layout>
 
 <style>
