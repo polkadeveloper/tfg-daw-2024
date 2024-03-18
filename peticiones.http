@@ -1,0 +1,17 @@
+###
+# POST BÁSICO
+POST http://localhost:4321/api/signup
+Content-Type: application/json
+
+{
+  "username": "user1",
+  "password": "123456"
+}
+
+###
+
+###
+# POST BÁSICO
+GET http://localhost:4321/api/items
+
+###
