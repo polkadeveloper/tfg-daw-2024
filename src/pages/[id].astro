@@ -1,59 +1,80 @@
 ---
-import Footer from "@/components/Footer.astro";
-import Header from "@/components/Header.astro";
 import Layout from "@/layouts/Layout.astro";
-import { camisetas } from "@/services/itemsInfo.ts";
-import { arrayTallasPorItemId } from "@/services/sizesInfo.ts";
-
-// -> Exportamos la constante prerender con valor true para que no actue el SSR
-export const prerender = true;
-
-// -> Exportamos la función getStaticPaths para obtener las rutas de los productos
-export async function getStaticPaths() {
-  return camisetas.map(
-    ({
-      itemId,
-      collectionId,
-      itemName,
-      itemDescription,
-      itemPrice,
-      itemDiscounted,
-      itemImgName,
-    }) => {
-      return {
-        params: { id: itemId },
-        props: {
-          collectionId,
-          itemName,
-          itemDescription,
-          itemPrice,
-          itemDiscounted,
-          itemImgName,
-        },
-      };
-    }
-  );
-}
+import { arrayTallasPorItemId } from "@/services/sizesInfo";
 
 // Desestructuración de propiedades proporcionadas por Astro
 const { id } = Astro.params;
-// Desestructuración de propiedades proporcionadas por Camisetas
+
+const response = await fetch(`http://localhost:4321/api/${id}`);
+const data = await response.json();
+
+// Buscar el atributo con el id proporcionado
+// const attribute = data.attributes.find((attribute) => attribute.item_id === id);
+const attribute = data.attributes.find(
+  (attribute) => attribute.item_id === Number(id)
+);
+if (!attribute) return Astro.redirect("/404");
+
 const {
-  collectionId,
-  itemName,
-  itemDescription,
-  itemPrice,
-  itemDiscounted,
-  itemImgName,
-} = Astro.props;
+  item_id,
+  collection_id,
+  item_name,
+  item_description,
+  item_price,
+  item_discounted,
+  item_img_name,
+} = attribute;
+
+const productoAgotado = arrayTallasPorItemId[item_id - 1].tallas.every(
+  (talla) => talla.outOfStock === 1
+);
+
+// -> Exportamos la constante prerender con valor true para que no actue el SSR
+// export const prerender = true;
+
+// -> Exportamos la función getStaticPaths para obtener las rutas de los productos
+// export async function getStaticPaths() {
+//   return camisetas.map(
+//     ({
+//       itemId,
+//       collectionId,
+//       itemName,
+//       itemDescription,
+//       itemPrice,
+//       itemDiscounted,
+//       itemImgName,
+//     }) => {
+//       return {
+//         params: { id: itemId },
+//         props: {
+//           collectionId,
+//           itemName,
+//           itemDescription,
+//           itemPrice,
+//           itemDiscounted,
+//           itemImgName,
+//         },
+//       };
+//     }
+//   );
+// }
+
+// Desestructuración de propiedades proporcionadas por Camisetas
+// const {
+//   collectionId,
+//   itemName,
+//   itemDescription,
+//   itemPrice,
+//   itemDiscounted,
+//   itemImgName,
+// } = Astro.props;
 ---
 
 <!-- Componente principal que utiliza las propiedades del producto -->
-<Layout title={itemName}>
-  <Header />
+<Layout title=`Emblem - ${item_name}`>
   <!-- Sección Camiseta -->
   <section
-    class="bg-gradient-to-l from-rose-100 to-teal-100 relative p-4 pt-12 pb-10 flex flex-col md:flex-row md:justify-center md:items-center interFont text-base lg:text-lg"
+    class="min-h-[70vh] bg-gradient-to-l from-rose-100 to-teal-100 relative p-4 pt-12 pb-10 flex flex-col md:flex-row md:justify-center md:items-center interFont text-base lg:text-lg"
   >
     <article
       class="flex flex-col md:flex-row justify-center items-center gap-6 xl:gap-28"
@@ -65,17 +86,17 @@ const {
       >
         <!-- Imagen trasera de la camiseta -->
         <img
-          src=`https://res.cloudinary.com/dle7lr00f/image/upload/v1709637639/${itemImgName}-back.webp`
-          alt=""
+          src=`https://res.cloudinary.com/dle7lr00f/image/upload/v1709637639/${item_img_name}-back.webp`
+          alt=`Imagen trasera de la prenda: ${item_name}`
           class="w-full h-auto transition-transform duration-300 transform"
           id="backImage"
-          transition:name={`https://res.cloudinary.com/dle7lr00f/image/upload/v1709637639/${itemImgName}-back`}
+          transition:name={`https://res.cloudinary.com/dle7lr00f/image/upload/v1709637639/${item_img_name}-back`}
         />
 
         <!-- Imagen frontal de la camiseta -->
         <img
-          src=`https://res.cloudinary.com/dle7lr00f/image/upload/v1709637639/${itemImgName}-front.webp`
-          alt=""
+          src=`https://res.cloudinary.com/dle7lr00f/image/upload/v1709637639/${item_img_name}-front.webp`
+          alt=`Imagen frontal de la prenda: ${item_name}`
           class="w-full h-auto transition-transform duration-300 transform absolute top-0 left-0 opacity-0"
           id="frontImage"
         />
@@ -87,14 +108,14 @@ const {
       >
         <!-- Nombre del producto -->
         <h1
-          class="text-2xl lg:text-3xl xl:text-4xl lg:text-center cabinetGrotesk-bold"
-          transition:name={`${itemName}`}
+          class="text-2xl lg:text-3xl xl:text-4xl lg:text-center font-cabinetGroteskBold"
+          transition:name={`${item_name}`}
         >
-          {itemName}
+          {item_name}
         </h1>
         <!-- Precio del producto -->
-        <p transition:name={`${itemPrice + itemName}`}>
-          <span class="text-purple-800">{itemPrice}€</span>
+        <p transition:name={`${item_price + item_name}`}>
+          <span class="text-purple-800">{item_price}€</span>
         </p>
 
         <!-- Sección Tallas -->
@@ -107,12 +128,12 @@ const {
             class="flex justify-center items-center gap-5 text-xs"
           >
             <select
-              class="bg-gray-200 hover:bg-gray-300 text-black py-1 px-1 border-2 border-black rounded-lg"
+              class="bg-gray-200 hover:bg-gray-300 cursor-pointer text-black py-1 px-1 border-2 border-black rounded-lg"
             >
               <!-- Mapeo de opciones de tallas desde las propiedades -->
 
               {
-                arrayTallasPorItemId[id - 1].tallas.map((talla) => (
+                arrayTallasPorItemId[item_id - 1].tallas.map((talla) => (
                   <option
                     value={talla.sizeName}
                     disabled={talla.stockQuantity <= 5}
@@ -124,14 +145,8 @@ const {
               }
             </select>
 
-            <p class="text-red-500 text-lg cabinetGrotesk-bold">
-              {
-                arrayTallasPorItemId[id - 1].tallas.every(
-                  (talla) => talla.outOfStock === 1
-                )
-                  ? "Producto Agotado"
-                  : ""
-              }
+            <p class="text-red-500 text-lg font-cabinetGroteskBold">
+              {productoAgotado ? "Producto Agotado" : ""}
             </p>
           </div>
         </div>
@@ -139,9 +154,9 @@ const {
         <!-- Descripción del producto -->
         <p
           class="max-w-sm lg:max-w-xl xl:max-w-2xl"
-          transition:name={`${itemDescription}`}
+          transition:name={`${item_id + item_description}`}
         >
-          {itemDescription}
+          {item_description}
         </p>
 
         <!-- Lista de características del producto -->
@@ -153,7 +168,8 @@ const {
 
         <!-- Botón "Add to cart" -->
         <button
-          class="bg-purple-300 hover:bg-purple-400 px-2 py-4 md:px-4 md:py-4 text-base flex gap-2 rounded-lg"
+          class="bg-purple-300 hover:bg-purple-400 px-2 py-4 md:px-4 md:py-4 text-base flex gap-2 rounded-lg select-none"
+          style={productoAgotado ? "pointer-events: none; opacity: 0.5;" : ""}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -171,7 +187,6 @@ const {
       </article>
     </article>
   </section>
-  <Footer />
 </Layout>
 
 <!-- Estilos CSS para la sección de cambio de imagen al hacer hover -->
