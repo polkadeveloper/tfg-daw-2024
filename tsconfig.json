@@ -1,9 +1,13 @@
 {
   "extends": "astro/tsconfigs/base",
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "C:/Users/Alvar/OneDrive/Escritorio/2º DAW/Desarrollo-Interfaces/emblem-tienda-astro",
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
   }
 }
