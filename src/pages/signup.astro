@@ -1,4 +1,10 @@
-<!--pages/signup.astro-->
+---
+import { SignupFormDemo } from "@/components/Input.tsx";
+import Layout from "@/layouts/Layout.astro";
+import Url from "@/components/Url.astro";
+---
+
+<!-- pages/signup.astro
 <html lang="en">
 	<body>
 		<h1>Sign up</h1>
@@ -8,6 +14,19 @@
 			<label for="password">Password</label>
 			<input id="password" name="password" />
 			<button>Continue</button>
+
+			
 		</form>
 	</body>
-</html>
+</html> -->
+<Layout title="Emblem - Registro">
+  <section
+    class="py-10 flex flex-col justify-center items-center font-cabinetGroteskBold px-2"
+  >
+    <h1>Registro</h1>
+    <p>Regístrate para poder acceder a todos los servicios de Emblem</p>
+    <SignupFormDemo client:load>
+     <Url />
+    </SignupFormDemo>
+  </section>
+</Layout>
