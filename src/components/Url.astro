@@ -1,0 +1,43 @@
+
+
+{
+  Astro.url.searchParams.get("error") === "invalid_username" && (
+    <p class="text-red-500 font-cabinetGroteskBold text-base">
+      El nombre de usuario es inválido.
+    </p>
+  )
+}
+
+{
+  Astro.url.searchParams.get("error") === "invalid_password" && (
+    <p class="text-red-500 font-cabinetGroteskBold text-base">
+      La contraseña es inválida.
+    </p>
+  )
+}
+
+{
+  Astro.url.searchParams.get("error") === "username_exists" && (
+    <p class="text-red-500 font-cabinetGroteskBold text-base">
+      El nombre de usuario ya existe.
+    </p>
+  )
+}
+
+{
+  Astro.url.searchParams.get("error") === "invalid_email" && (
+    <p class="text-red-500 font-cabinetGroteskBold text-base">
+      El correo electrónico es inválido.
+    </p>
+  )
+}
+
+{
+  Astro.url.searchParams.get("error") === "email_exists" && (
+    <p class="text-red-500 font-cabinetGroteskBold text-base">
+      El correo electrónico ya existe.
+    </p>
+  )
+}
+
+
