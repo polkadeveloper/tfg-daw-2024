@@ -1,18 +1,29 @@
 ---
-
-const {nombre, precio, img, link}= Astro.props;
-
+const { nombre, precio, img, link } = Astro.props;
 ---
 
-
 <section class="border-[1px] border-green-800 rounded-xl relative lg:w-auto">
-    <article class="flex flex-col gap-2 justify-center items-center m-4 cabinetGrotesk-bold">
-    <img src= {img} alt=`Imagen de la prenda ${nombre}` transition:name={`${img}`} class="w-72 h-auto md:w-80 lg:w-64 xl:w-72">
-    <p class="text-center text-base lg:text-lg" transition:name={`${nombre}`}>{nombre}</p>
-    <p class="text-center text-lg text-purple-800" transition:name={`${precio + nombre}`}>{precio}€</p>
-    <a class="rounded-lg bg-green-300 border-[1px] border-green-800 hover:bg-green-400 text-black px-2 py-1 cursor-pointer" href={link}>Ver disponibilidad</a>
-</article>
-
-</div>
+  <article
+    class="flex flex-col gap-2 justify-center items-center m-4 font-cabinetGroteskBold"
+  >
+    <img
+      src={img}
+      alt=`Imagen de la prenda ${nombre}`
+      transition:name={`${img}`}
+      class="w-72 h-auto md:w-80 lg:w-64 xl:w-72 select-none"
+    />
+    <p class="text-center text-base lg:text-lg" transition:name={`${nombre}`}>
+      {nombre}
+    </p>
+    <p
+      class="text-center text-lg text-purple-800"
+      transition:name={`${precio + nombre}`}
+    >
+      {precio}€
+    </p>
+    <a
+      class="rounded-lg bg-green-300 border-[1px] border-green-800 hover:bg-green-400 text-black px-2 py-1 cursor-pointer select-none"
+      href={link}>Ver disponibilidad</a
+    >
+  </article>
 </section>
-
