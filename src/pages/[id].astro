@@ -74,7 +74,7 @@ const productoAgotado = arrayTallasPorItemId[item_id - 1].tallas.every(
 <Layout title=`Emblem - ${item_name}`>
   <!-- Sección Camiseta -->
   <section
-    class="min-h-[70vh] bg-gradient-to-l from-rose-100 to-teal-100 relative p-4 pt-12 pb-10 flex flex-col md:flex-row md:justify-center md:items-center interFont text-base lg:text-lg"
+    class="min-h-[70vh] relative p-4 pt-12 pb-10 flex flex-col md:flex-row md:justify-center md:items-center interFont text-base lg:text-lg"
   >
     <article
       class="flex flex-col md:flex-row justify-center items-center gap-6 xl:gap-28"
@@ -115,7 +115,7 @@ const productoAgotado = arrayTallasPorItemId[item_id - 1].tallas.every(
         </h1>
         <!-- Precio del producto -->
         <p transition:name={`${item_price + item_name}`}>
-          <span class="text-purple-800">{item_price}€</span>
+          <span>{item_price}€</span>
         </p>
 
         <!-- Sección Tallas -->
@@ -168,7 +168,7 @@ const productoAgotado = arrayTallasPorItemId[item_id - 1].tallas.every(
 
         <!-- Botón "Add to cart" -->
         <button
-          class="bg-purple-300 hover:bg-purple-400 px-2 py-4 md:px-4 md:py-4 text-base flex gap-2 rounded-lg select-none"
+          class="bg-indigo-700 hover:bg-indigo-500 px-2 py-4 md:px-4 md:py-4 text-base flex gap-2 rounded-lg select-none"
           style={productoAgotado ? "pointer-events: none; opacity: 0.5;" : ""}
         >
           <svg
