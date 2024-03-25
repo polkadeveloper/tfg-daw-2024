@@ -2,7 +2,9 @@
 const { nombre, precio, img, link } = Astro.props;
 ---
 
-<section class="border-[1px] border-green-800 rounded-xl relative lg:w-auto">
+<section
+  class="border-2 border-white/80 backdrop-blur-3xl bg-indigo-500/30 rounded-xl relative lg:w-auto"
+>
   <article
     class="flex flex-col gap-2 justify-center items-center m-4 font-cabinetGroteskBold"
   >
@@ -11,19 +13,20 @@ const { nombre, precio, img, link } = Astro.props;
       alt=`Imagen de la prenda ${nombre}`
       transition:name={`${img}`}
       class="w-72 h-auto md:w-80 lg:w-64 xl:w-72 select-none"
+      style="aspect-ratio: 503/357;"
     />
     <p class="text-center text-base lg:text-lg" transition:name={`${nombre}`}>
       {nombre}
     </p>
     <p
-      class="text-center text-lg text-purple-800"
+      class="text-center text-lg text-white"
       transition:name={`${precio + nombre}`}
     >
       {precio}€
     </p>
     <a
-      class="rounded-lg bg-green-300 border-[1px] border-green-800 hover:bg-green-400 text-black px-2 py-1 cursor-pointer select-none"
-      href={link}>Ver disponibilidad</a
+      class="rounded-lg bg-indigo-600 hover:bg-indigo-800 text-white px-2 py-1 cursor-pointer select-none"
+      href={link}><strong>Ver disponibilidad</strong></a
     >
   </article>
 </section>
