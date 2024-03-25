@@ -1,0 +1,23 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { Toast } from "@/components/Toast.tsx";
+const { emailId } = Astro.params;
+---
+
+<Layout title="Emblem - Email enviado">
+  <section class="min-h-[70vh] flex flex-col justify-center items-center px-5 py-10 gap-5">
+    <h1 class="text-4xl">Email enviado con éxito!</h1>
+    <p class="text-2xl">Revisa tu bandeja de entrada para restablecer la contraseña</p>
+  </section>
+</Layout>
+
+{
+  Astro.url.searchParams.get("email") === "sent" && (
+    <Toast
+      message="Email enviado con éxito"
+      direction="top-right"
+      theme="dark"
+      client:load
+    />
+  )
+}
