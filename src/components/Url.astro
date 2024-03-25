@@ -1,9 +1,7 @@
-
-
 {
   Astro.url.searchParams.get("error") === "invalid_username" && (
     <p class="text-red-500 font-cabinetGroteskBold text-base">
-      El nombre de usuario es inválido.
+      El nombre de usuario es inválido, debe tener como mínimo 6 caracteres.
     </p>
   )
 }
@@ -11,7 +9,8 @@
 {
   Astro.url.searchParams.get("error") === "invalid_password" && (
     <p class="text-red-500 font-cabinetGroteskBold text-base">
-      La contraseña es inválida.
+      La contraseña es inválida, debe tener como mínimo 8 caracteres, una
+      mayúscula una minúscula y un número.
     </p>
   )
 }
@@ -19,7 +18,7 @@
 {
   Astro.url.searchParams.get("error") === "username_exists" && (
     <p class="text-red-500 font-cabinetGroteskBold text-base">
-      El nombre de usuario ya existe.
+      El nombre de usuario ya existe, porfavor elige otro.
     </p>
   )
 }
@@ -27,7 +26,7 @@
 {
   Astro.url.searchParams.get("error") === "invalid_email" && (
     <p class="text-red-500 font-cabinetGroteskBold text-base">
-      El correo electrónico es inválido.
+      El correo electrónico es inválido, debe tener un formato válido.
     </p>
   )
 }
@@ -35,9 +34,47 @@
 {
   Astro.url.searchParams.get("error") === "email_exists" && (
     <p class="text-red-500 font-cabinetGroteskBold text-base">
-      El correo electrónico ya existe.
+      El correo electrónico ya existe, porfavor elige otro.
     </p>
   )
 }
 
+{
+  Astro.url.searchParams.get("error") === "email_not_exists" && (
+    <p class="text-red-500 font-cabinetGroteskBold text-base">
+      El correo electrónico no existe.
+    </p>
+  )
+}
 
+{
+  Astro.url.searchParams.get("error") === "incorrect_credentials" && (
+    <p class="text-red-500 font-cabinetGroteskBold text-base">
+      El usuario o la contraseña son incorrectos.
+    </p>
+  )
+}
+
+{
+  Astro.url.searchParams.get("error") === "passwords_mismatch" && (
+    <p class="text-red-500 font-cabinetGroteskBold text-base">
+      Las contraseña no coinciden.
+    </p>
+  )
+}
+
+{
+  Astro.url.searchParams.get("error") === "invalid_user" && (
+    <p class="text-red-500 font-cabinetGroteskBold text-base">
+      El usuario es inválido.
+    </p>
+  )
+}
+
+{
+  Astro.url.searchParams.get("error") === "same_password" && (
+    <p class="text-red-500 font-cabinetGroteskBold text-base">
+      La contraseña es la misma que la anterior.
+    </p>
+  )
+}
