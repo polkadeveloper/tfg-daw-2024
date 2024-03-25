@@ -3,11 +3,6 @@ import React, { useRef, useEffect } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/utils/cn";
-import {
-  IconBrandGithub,
-  IconBrandGoogle,
-  IconBrandOnlyfans,
-} from "@tabler/icons-react";
 import { Toaster, toast } from "sonner";
 export function SignupFormDemo(props: any) {
   const firstnameRef = useRef<HTMLInputElement>(null);
@@ -60,7 +55,7 @@ export function SignupFormDemo(props: any) {
   }, []);
 
   return (
-    <div className="max-w-md w-full mx-auto rounded-2xl p-4 md:p-8 shadow-input bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))] from-slate-700 via-black to-black">
+    <div className="max-w-md w-full mx-auto rounded-2xl p-4 md:p-8 shadow-input bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))] from-indigo-500 via-black to-black border-2 border-indigo-500/40">
       <h2 className="font-bold text-2xl text-neutral-200">
         Bienvenido a Emblem
       </h2>
@@ -122,6 +117,7 @@ export function SignupFormDemo(props: any) {
           />
         </LabelInputContainer>
 
+        {/* Mostramos los mensajes de error aquí */}
         {props.children}
 
         <button
@@ -132,22 +128,13 @@ export function SignupFormDemo(props: any) {
           <BottomGradient />
         </button>
 
-        <div className="bg-gradient-to-r from-transparent via-neutral-700 to-transparent my-8 h-[1px] w-full" />
+        <div className="bg-gradient-to-r from-transparent via-indigo-800 to-transparent my-8 h-[1px] w-full" />
 
-        {/* <div className="flex flex-col space-y-4">
-          <button
-            className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-            type="submit"
-          >
-            <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
-            <span className="text-neutral-700 dark:text-neutral-300 text-sm">
-              Iniciar sesión con Google
-            </span>
-            <BottomGradient />
-          </button>
-        </div> */}
+        <div className="flex flex-col space-y-4">
+          <a className="text-center" href="/login">¿Ya tienes una cuenta? Inicia sesión</a>
+        </div>
 
-        <Toaster position="top-right" expand={true} richColors />
+        <Toaster position="top-right" expand={true} richColors theme="dark" />
       </form>
     </div>
   );
@@ -156,7 +143,7 @@ export function SignupFormDemo(props: any) {
 const BottomGradient = () => {
   return (
     <>
-      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
+      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
       <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
     </>
   );
