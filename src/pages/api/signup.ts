@@ -22,17 +22,23 @@ export async function POST(context: APIContext): Promise<Response> {
     username.length > 18 ||
     !/^[a-z0-9_-]+$/.test(username)
   ) {
-    // Si el nombre de usuario no es válido, devolvemos una respuesta con un estado 400
-    return context.redirect("/signup?error=invalid_username&toast=Error+al+crear+la+cuenta+,+intentalo+de+nuevo");
+    // Si el nombre de usuario no es válido, redirigimos al usuario a la página de registro con un mensaje de error
+    return context.redirect(
+      "/signup?error=invalid_username&toast=Error+al+crear+la+cuenta+,+intentalo+de+nuevo",
+    );
   }
 
   // Obtenemos y validamos la contraseña
   const password = formData.get("password");
+  // Regex para validar la contraseña con una longitud mínima de 8 caracteres, al menos una letra mayúscula, una letra minúscula y un dígito
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,100}$/;
   if (
-    typeof password !== "string" || password.length < 8 || password.length > 100
+    typeof password !== "string" || !passwordRegex.test(password)
   ) {
-    // Si la contraseña no es válida, devolvemos una respuesta con un estado 400
-    return context.redirect("/signup?error=invalid_password&toast=Error+al+crear+la+cuenta+,+intentalo+de+nuevo");
+    // Si la contraseña no es válida, redirigimos al usuario a la página de registro con un mensaje de error
+    return context.redirect(
+      "/signup?error=invalid_password&toast=Error+al+crear+la+cuenta+,+intentalo+de+nuevo",
+    );
   }
 
   // Generamos un ID de usuario y una contraseña cifrada
@@ -46,32 +52,37 @@ export async function POST(context: APIContext): Promise<Response> {
     [username],
   );
   if (existingUser.length > 0) {
-    // Si el usuario ya existe, devolvemos una respuesta con un estado 400
-    return context.redirect("/signup?error=username_exists&toast=Error+al+crear+la+cuenta+,+intentalo+de+nuevo");
+    // Si el usuario ya existe, redirigimos al usuario a la página de registro con un mensaje de error
+    return context.redirect(
+      "/signup?error=username_exists&toast=Error+al+crear+la+cuenta+,+intentalo+de+nuevo",
+    );
   }
 
-  // validamos el email
+  // Validamos el email
   if (
     typeof email !== "string" ||
     email.length < 10 ||
     email.length > 100 ||
     !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email)
   ) {
-    // Si el email no es válido, devolvemos una respuesta con un estado 400
-    return context.redirect("/signup?error=invalid_email&toast=Error+al+crear+la+cuenta+,+intentalo+de+nuevo");
+    // Si el email no es válido, redirigimos al usuario a la página de registro con un mensaje de error
+    return context.redirect(
+      "/signup?error=invalid_email&toast=Error+al+crear+la+cuenta+,+intentalo+de+nuevo",
+    );
   }
 
-  // comprobamos si ya existe un usuario con el mismo email
+  // Comprobamos si ya existe un usuario con el mismo email
   const [existingEmail] = await db.query<RowDataPacket[]>(
     "SELECT * FROM users WHERE user_email = ?",
     [email],
   );
 
   if (existingEmail.length > 0) {
-    // Si el email ya existe, devolvemos una respuesta con un estado 400
-    return context.redirect("/signup?error=email_exists&toast=Error+al+crear+la+cuenta+,+intentalo+de+nuevo");
+    // Si el email ya existe, redirigimos al usuario a la página de registro con un mensaje de error
+    return context.redirect(
+      "/signup?error=email_exists&toast=Error+al+crear+la+cuenta+,+intentalo+de+nuevo",
+    );
   }
-
 
   // Si el usuario no existe, lo insertamos en la base de datos
   await db.query(
@@ -88,6 +99,6 @@ export async function POST(context: APIContext): Promise<Response> {
     sessionCookie.attributes,
   );
 
-  // Redirigimos al usuario a la página de inicio
+  // Redirigimos al usuario a la página de inicio con un mensaje de éxito
   return context.redirect("/?account=created");
 }
