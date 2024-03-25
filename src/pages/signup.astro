@@ -4,29 +4,10 @@ import Layout from "@/layouts/Layout.astro";
 import Url from "@/components/Url.astro";
 ---
 
-<!-- pages/signup.astro
-<html lang="en">
-	<body>
-		<h1>Sign up</h1>
-		<form method="post" action="/api/signup">
-			<label for="username">Username</label>
-			<input id="username" name="username" />
-			<label for="password">Password</label>
-			<input id="password" name="password" />
-			<button>Continue</button>
-
-			
-		</form>
-	</body>
-</html> -->
 <Layout title="Emblem - Registro">
-  <section
-    class="py-10 flex flex-col justify-center items-center font-cabinetGroteskBold px-2"
-  >
-    <h1>Registro</h1>
-    <p>Regístrate para poder acceder a todos los servicios de Emblem</p>
+  <section class="py-10 font-cabinetGroteskBold px-5">
     <SignupFormDemo client:load>
-     <Url />
+      <Url />
     </SignupFormDemo>
   </section>
 </Layout>
