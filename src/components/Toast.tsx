@@ -2,7 +2,7 @@ import { Toaster, toast } from "sonner";
 
 export function Toast(props: any) {
   setTimeout(() => {
-    toast.success("Cuenta creada exitosamente");
+    toast.success(props.message);
   });
   return (
     <Toaster
