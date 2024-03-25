@@ -2,189 +2,26 @@
 import Layout from "@/layouts/Layout.astro";
 import EyeOff from "@/components/EyeOff.astro";
 import EyeVisible from "@/components/EyeVisible.astro";
+import { LoginForm } from "@/components/Login.tsx";
+import Url from "@/components/Url.astro";
+import { Toast } from "@/components/Toast.tsx";
 ---
 
 <Layout title="Emblem - Inicio de sesión">
-  <section
-    class="min-h-screen flex flex-col justify-center items-center gap-y-7 font-cabinetGroteskBold text-white"
-  >
-    <h1 class="text-black text-center text-4xl md:text-5xl text-balance">
-      Bienvenido de nuevo!
-    </h1>
-    <article
-      class="flex flex-col justify-center items-center gap-4 bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))] from-slate-700 via-black to-black border-4 border-black rounded-xl md:w-[400px] md:h-[475px] px-10 py-10 mx-2"
-    >
-      <h2 class="text-4xl">Iniciar sesión</h2>
-      <form
-        id="loginForm"
-        class="flex flex-col gap-2 w-full"
-        method="post"
-        action="/api/login"
-      >
-        <label for="username">Usuario</label>
-        <input
-          placeholder="Nombre de usuario.."
-          class="bg-black rounded-lg border-2 placeholder:p-1 text-white p-1 border-white"
-          id="username"
-          name="username"
-          type="text"
-        />
-        <p
-          id="errorUsuario"
-          class="text-red-500 font-cabinetGroteskBold text-sm"
-        >
-          Entre 8 y 31 caracteres y sólo caracteres alfanuméricos
-        </p>
-
-        <label for="password">Contraseña</label>
-        <div class="relative">
-          <input
-            placeholder="Contraseña.."
-            class="bg-black rounded-lg border-2 placeholder:p-1 text-white p-1 w-full"
-            id="password"
-            name="password"
-            type="password"
-          />
-
-          <button
-            id="eyeButtonOff"
-            type="button"
-            class="absolute right-2 top-1/2 transform -translate-y-1/2"
-          >
-            <EyeOff />
-          </button>
-
-          <button
-            id="eyeButtonVisible"
-            type="button"
-            class="hidden absolute right-2 top-1/2 transform -translate-y-1/2"
-          >
-            <EyeVisible />
-          </button>
-        </div>
-
-        <p
-          id="errorContraseña"
-          class="text-red-500 font-cabinetGroteskBold text-sm"
-        >
-          Al menos 8 caracteres, una mayúscula, una minúscula y un número.
-        </p>
-        {
-          Astro.url.searchParams.get("error") === "invalid_username" && (
-            <p class="text-red-500 font-cabinetGroteskBold text-base">
-              El nombre de usuario es inválido.
-            </p>
-          )
-        }
-        {
-          Astro.url.searchParams.get("error") === "invalid_password" && (
-            <p class="text-red-500 font-cabinetGroteskBold text-base">
-              La contraseña es inválida.
-            </p>
-          )
-        }
-        {
-          Astro.url.searchParams.get("error") === "incorrect_credentials" && (
-            <p class="text-red-500 font-cabinetGroteskBold text-base">
-              El nombre de usuario o la contraseña son incorrectos.
-            </p>
-          )
-        }
-        <button
-          class="bg-black border-2 border-white rounded-md text-base self-center px-4 py-2 mt-5 font-cabinetGroteskBold"
-          >Enviar</button
-        >
-      </form>
-      <a href="/signup">No tienes cuenta? Registrate</a>
-      <a href="/signup">¿Has olvidado tu contraseña?</a>
-    </article>
+  <section class="px-5 py-10 flex justify-center items-center">
+    <LoginForm client:load>
+      <Url />
+    </LoginForm>
   </section>
-
-  <script>
-    // Necesitamos esperar a que la página se cargue para poder acceder a los elementos del DOM
-    // ya que estamos usando ViewTransitions
-    document.addEventListener("astro:page-load", () => {
-      const errorUsuario = document.querySelector(
-        "#errorUsuario"
-      ) as HTMLParagraphElement;
-
-      const errorContraseña = document.querySelector(
-        "#errorContraseña"
-      ) as HTMLParagraphElement;
-
-      const password = document.querySelector("#password") as HTMLInputElement;
-      const username = document.querySelector("#username") as HTMLInputElement;
-
-      // Comprobamos el valor del campo usuario cada vez que se modifica
-      username.addEventListener("input", () => {
-        if (
-          typeof username.value !== "string" ||
-          username.value.length < 8 ||
-          username.value.length > 31 ||
-          !/^[a-z0-9_-]+$/.test(username.value)
-        ) {
-          errorUsuario.classList.add("text-red-500");
-          errorUsuario.classList.remove("text-green-500");
-          username.classList.remove("valid");
-          username.classList.add("invalid");
-        } else {
-          errorUsuario.classList.remove("text-red-500");
-          errorUsuario.classList.add("text-green-500");
-          username.classList.remove("invalid");
-          username.classList.add("valid");
-        }
-      });
-
-      // Comprobamos el valor del campo contraseña cada vez que se modifica
-      password.addEventListener("input", () => {
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-
-        if (
-          typeof password.value !== "string" ||
-          password.value.length < 8 ||
-          password.value.length > 255 ||
-          !passwordRegex.test(password.value)
-        ) {
-          errorContraseña.classList.add("text-red-500");
-          errorContraseña.classList.remove("text-green-500");
-          password.classList.remove("valid");
-          password.classList.add("invalid");
-        } else {
-          errorContraseña.classList.remove("text-red-500");
-          errorContraseña.classList.add("text-green-500");
-          password.classList.remove("invalid");
-          password.classList.add("valid");
-        }
-      });
-
-      const eyeButtonOff = document.querySelector(
-        "#eyeButtonOff"
-      ) as HTMLButtonElement;
-      const eyeButtonVisible = document.querySelector(
-        "#eyeButtonVisible"
-      ) as HTMLButtonElement;
-
-      eyeButtonOff.addEventListener("click", () => {
-        eyeButtonOff.classList.add("hidden");
-        eyeButtonVisible.classList.remove("hidden");
-        password.type = "text";
-      });
-
-      eyeButtonVisible.addEventListener("click", () => {
-        eyeButtonVisible.classList.add("hidden");
-        eyeButtonOff.classList.remove("hidden");
-        password.type = "password";
-      });
-    });
-  </script>
+  {
+    Astro.url.searchParams.get("password") === "changed" && (
+      <Toast
+        message="Contraseña modificada con éxito"
+        position="top-right"
+        theme="dark"
+        client:load
+      />
+    )
+  }
 </Layout>
 
-<style>
-  .invalid {
-    border-color: red;
-  }
-
-  .valid {
-    border-color: green;
-  }
-</style>
