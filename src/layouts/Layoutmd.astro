@@ -3,8 +3,6 @@
 // accede a las propiedades proporcionadas por Astro para mostrar información sobre una sección.
 
 // Importación del componente de diseño
-import Footer from "@/components/Footer.astro";
-import Header from "@/components/Header.astro";
 import Layout from "@/layouts/Layout.astro";
 
 // Importación del módulo 'astro:transitions'
@@ -15,7 +13,7 @@ const { frontmatter } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -27,9 +25,7 @@ const { frontmatter } = Astro.props;
     <!-- Uso del componente de diseño 'Layout' con un título personalizado -->
     <Layout title={frontmatter.title}>
       <!-- Sección principal con estilos de fondo y espaciado -->
-      <section
-        class="bg-gradient-to-l from-rose-100 to-teal-100 pt-10 pb-10 p-6 text-left"
-      >
+      <section class="bg-transparent pt-10 pb-10 p-6 text-left">
         <!-- Contenedor principal con estilos de altura y ancho máximo -->
         <section
           class="min-h-screen max-w-3xl flex flex-col justify-center items-center gap-8 m-auto interFont text-base"
