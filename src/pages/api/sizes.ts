@@ -1,19 +1,11 @@
 // Importamos el tipo APIRoute de Astro que nos permite realizar peticiones a la API
 import { type APIRoute } from "astro";
-// Importamos el cliente de MySQL para realizar la conexión a la base de datos y las consultas
-import mysql from "mysql2/promise";
+import { connection as db } from "@/pages/api/items";
 
 // Creamos la función GET que se encargará de obtener los datos de la base de datos y devolverlos
 export const GET: APIRoute = async ({ request }) => {
-  // Creamos la conexión a la base de datos
-  const connection = await mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    database: "tfg-daw-2024",
-  });
-
   try {
-    const [rows, fields] = await connection.execute(`SELECT 
+    const [rows, fields] = await db.execute(`SELECT 
     items.item_id,
     items_sizes_stock.size_id,
     items_sizes_stock.quantity AS stock_quantity,
