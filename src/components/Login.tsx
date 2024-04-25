@@ -124,7 +124,7 @@ export function LoginForm(props: any) {
           </button>
 
           <a className="text-center pt-5" href="/signup">
-            ¿No tienes cuenta? Registrate
+            ¿No tienes cuenta? Regístrate
           </a>
           <a className="text-center" href="/forgot-password">
             ¿Has olvidado tu contraseña?
