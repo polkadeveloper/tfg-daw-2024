@@ -1,6 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import { arrayTallasPorItemId } from "@/services/sizesInfo";
+import AddToCartForm from "@/components/AddToCartForm";
 
 // Desestructuración de propiedades proporcionadas por Astro
 const { id } = Astro.params;
@@ -28,46 +29,6 @@ const {
 const productoAgotado = arrayTallasPorItemId[item_id - 1].tallas.every(
   (talla) => talla.outOfStock === 1
 );
-
-// -> Exportamos la constante prerender con valor true para que no actue el SSR
-// export const prerender = true;
-
-// -> Exportamos la función getStaticPaths para obtener las rutas de los productos
-// export async function getStaticPaths() {
-//   return camisetas.map(
-//     ({
-//       itemId,
-//       collectionId,
-//       itemName,
-//       itemDescription,
-//       itemPrice,
-//       itemDiscounted,
-//       itemImgName,
-//     }) => {
-//       return {
-//         params: { id: itemId },
-//         props: {
-//           collectionId,
-//           itemName,
-//           itemDescription,
-//           itemPrice,
-//           itemDiscounted,
-//           itemImgName,
-//         },
-//       };
-//     }
-//   );
-// }
-
-// Desestructuración de propiedades proporcionadas por Camisetas
-// const {
-//   collectionId,
-//   itemName,
-//   itemDescription,
-//   itemPrice,
-//   itemDiscounted,
-//   itemImgName,
-// } = Astro.props;
 ---
 
 <!-- Componente principal que utiliza las propiedades del producto -->
@@ -86,15 +47,17 @@ const productoAgotado = arrayTallasPorItemId[item_id - 1].tallas.every(
       >
         <!-- Imagen trasera de la camiseta -->
         <img
+          decoding="async"
           src=`https://res.cloudinary.com/dle7lr00f/image/upload/v1709637639/${item_img_name}-back.webp`
           alt=`Imagen trasera de la prenda: ${item_name}`
-          class="w-full h-auto transition-transform duration-300 transform"
+          class="w-full h-auto transition-transform duration-300 transform aspect-[499/355]"
           id="backImage"
           transition:name={`https://res.cloudinary.com/dle7lr00f/image/upload/v1709637639/${item_img_name}-back`}
         />
 
         <!-- Imagen frontal de la camiseta -->
         <img
+          decoding="async"
           src=`https://res.cloudinary.com/dle7lr00f/image/upload/v1709637639/${item_img_name}-front.webp`
           alt=`Imagen frontal de la prenda: ${item_name}`
           class="w-full h-auto transition-transform duration-300 transform absolute top-0 left-0 opacity-0"
@@ -118,72 +81,41 @@ const productoAgotado = arrayTallasPorItemId[item_id - 1].tallas.every(
           <span>{item_price}€</span>
         </p>
 
-        <!-- Sección Tallas -->
-        <div id="seccionTallas" class="flex gap-2 justify-center items-center">
-          <p>Tallas:</p>
-
-          <!-- Sección Botones Tallas -->
-          <div
-            id="btn-Tallas"
-            class="flex justify-center items-center gap-5 text-xs"
-          >
-            <select
-              class="bg-gray-200 hover:bg-gray-300 cursor-pointer text-black py-1 px-1 border-2 border-black rounded-lg"
-            >
-              <!-- Mapeo de opciones de tallas desde las propiedades -->
-
-              {
-                arrayTallasPorItemId[item_id - 1].tallas.map((talla) => (
-                  <option
-                    value={talla.sizeName}
-                    disabled={talla.stockQuantity <= 5}
-                  >
-                    {talla.sizeName}{" "}
-                    {talla.stockQuantity <= 5 ? "(Agotado)" : ""}
-                  </option>
-                ))
-              }
-            </select>
-
-            <p class="text-red-500 text-lg font-cabinetGroteskBold">
-              {productoAgotado ? "Producto Agotado" : ""}
-            </p>
-          </div>
-        </div>
-
-        <!-- Descripción del producto -->
-        <p
-          class="max-w-sm lg:max-w-xl xl:max-w-2xl"
-          transition:name={`${item_id + item_description}`}
-        >
-          {item_description}
-        </p>
-
-        <!-- Lista de características del producto -->
-        <ul class="text-base">
-          <li>100% cotton</li>
-          <li>Standard fit</li>
-          <li>High quality digital print</li>
-        </ul>
-
         <!-- Botón "Add to cart" -->
-        <button
-          class="bg-indigo-700 hover:bg-indigo-500 px-2 py-4 md:px-4 md:py-4 text-base flex gap-2 rounded-lg select-none"
-          style={productoAgotado ? "pointer-events: none; opacity: 0.5;" : ""}
+        <AddToCartForm
+          client:only
+          itemInfo={{
+            id: item_id,
+            collection_id: collection_id,
+            name: item_name,
+            description: item_description,
+            price: item_price,
+            discounted: item_discounted,
+            size: 1,
+            imageSrc: `https://res.cloudinary.com/dle7lr00f/image/upload/v1709637639/${item_img_name}-back`,
+          }}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
+          <button
+            type="submit"
+            class="bg-indigo-700 hover:bg-indigo-500 px-2 py-4 md:px-4 md:py-4 text-base flex items-center gap-2 rounded-lg select-none"
+            style={productoAgotado ? "pointer-events: none; opacity: 0.5;" : ""}
           >
-            <!-- Icono de carrito de compra -->
-            <path
-              fill="#000000"
-              d="M17 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2M1 2v2h2l3.6 7.59l-1.36 2.45c-.15.28-.24.61-.24.96a2 2 0 0 0 2 2h12v-2H7.42a.25.25 0 0 1-.25-.25c0-.05.01-.09.03-.12L8.1 13h7.45c.75 0 1.41-.42 1.75-1.03l3.58-6.47c.07-.16.12-.33.12-.5a1 1 0 0 0-1-1H5.21l-.94-2M7 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2Z"
-            ></path>
-          </svg>Add to cart
-        </button>
+            <svg
+              data-testid="geist-icon"
+              height="16"
+              stroke-linejoin="round"
+              viewBox="0 0 16 16"
+              width="16"
+              style={{ color: "currentcolor" }}
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M0 2.5L0.958427 2.5C1.41012 2.5 1.82194 2.74308 2.04258 3.12774L2.5 4.5L3.93019 8.79057C4.27047 9.81142 5.22582 10.5 6.3019 10.5H12.4505C13.6422 10.5 14.6682 9.65885 14.9019 8.49029L15.7 4.5L16 3H14.4703L4.5 3L3.62309 3L3.50287 2.70678C3.07956 1.67431 2.0743 1 0.958427 1H0V2.5ZM4.08114 4.5L5.35321 8.31623C5.48933 8.72457 5.87147 9 6.3019 9H12.4505C12.9272 9 13.3376 8.66354 13.4311 8.19612L14.1703 4.5H4.5H4.08114ZM12.5 15C11.6716 15 11 14.3284 11 13.5C11 12.6716 11.6716 12 12.5 12C13.3284 12 14 12.6716 14 13.5C14 14.3284 13.3284 15 12.5 15ZM4.5 13.5C4.5 14.3284 5.17157 15 6 15C6.82843 15 7.5 14.3284 7.5 13.5C7.5 12.6716 6.82843 12 6 12C5.17157 12 4.5 12.6716 4.5 13.5Z"
+                fill="currentColor"></path>
+            </svg>Añadir al carrito
+          </button>
+        </AddToCartForm>
       </article>
     </article>
   </section>
