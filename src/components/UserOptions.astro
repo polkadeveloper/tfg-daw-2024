@@ -1,8 +1,9 @@
 ---
+import CartButton from "@/components/CartFlyoutToggle.tsx";
 const user = Astro.locals.user;
 ---
 
-<section class="relative group inline-block">
+<section class="relative inline-block group">
   <p
     class="cursor-pointer flex justify-center items-center gap-1 group-hover:bg-indigo-800 group-hover:shadow-md rounded-md rounded-bl-none rounded-br-none w-44 h-12 transition-all duration-500 ease-in-out"
   >
@@ -23,12 +24,13 @@ const user = Astro.locals.user;
     {user.username}
   </p>
   <ul
-    class="absolute w-full top-[3rem] rounded-md rounded-tr-none rounded-tl-none bg-white text-black shadow-md overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out"
+    class="absolute w-full top-[3rem] text-black shadow-md overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out"
   >
+    <li><CartButton client:load /></li>
     <li>
       <form method="post" action="/api/logout">
         <button
-          class="w-full flex justify-center items-center px-4 py-2 gap-2 transition-all duration-300 ease-in-out hover:bg-indigo-800 hover:text-white"
+          class="w-full bg-white flex justify-center items-center px-4 py-2 gap-2 transition-all duration-300 ease-in-out hover:bg-indigo-800 hover:text-white"
           ><svg
             data-testid="geist-icon"
             height="16"
@@ -41,13 +43,14 @@ const user = Astro.locals.user;
               clip-rule="evenodd"
               d="M2.5 13.5H6.75V15H2C1.44772 15 1 14.5523 1 14V2C1 1.44771 1.44772 1 2 1H6.75V2.5L2.5 2.5L2.5 13.5ZM12.4393 7.24999L10.4697 5.28031L9.93934 4.74998L11 3.68932L11.5303 4.21965L14.6036 7.29288C14.9941 7.6834 14.9941 8.31657 14.6036 8.70709L11.5303 11.7803L11 12.3106L9.93934 11.25L10.4697 10.7197L12.4393 8.74999L5.75 8.74999H5V7.24999H5.75L12.4393 7.24999Z"
               fill="currentColor"></path></svg
-          >Log out</button
+          >Cerrar sesión</button
         >
       </form>
     </li>
     <li>
       <a
-        class="flex justify-center items-center px-4 py-2 gap-2 transition-all duration-300 ease-in-out hover:bg-indigo-800 hover:text-white"
+        class="flex bg-white justify-center items-center px-4 py-2 gap-2 transition-all duration-300 ease-in-out hover:bg-indigo-800 hover:text-white"
+        href="/configuracion"
         ><svg
           data-testid="geist-icon"
           height="16"
@@ -65,7 +68,8 @@ const user = Astro.locals.user;
     </li>
     <li>
       <a
-        class="flex justify-center items-center px-4 py-2 gap-2 transition-all duration-300 ease-in-out hover:bg-indigo-800 hover:text-white"
+        href="/user-info"
+        class="flex bg-white justify-center items-center px-4 py-2 gap-2 rounded-br-md rounded-bl-md shadow-md transition-all duration-300 ease-in-out hover:bg-indigo-800 hover:text-white"
         ><svg
           data-testid="geist-icon"
           height="16"
