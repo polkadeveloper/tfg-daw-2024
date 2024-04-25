@@ -19,16 +19,24 @@ const isUserLoggedIn = user !== null;
   <ul
     class="hidden md:flex gap-10 text-base lg:text-lg font-cabinetGroteskBold cursor-pointer select-none md:col-span-6"
   >
-    <li class="hover:scale-110 hover:text-indigo-400 transition-all duration-500 ease-in-out">
+    <li
+      class="hover:scale-110 hover:text-indigo-400 transition-all duration-500 ease-in-out"
+    >
       <a href="/">Inicio</a>
     </li>
-    <li class="hover:scale-110 hover:text-indigo-400 transition-all duration-500 ease-in-out">
+    <li
+      class="hover:scale-110 hover:text-indigo-400 transition-all duration-500 ease-in-out"
+    >
       <a href="/camisetas">Productos</a>
     </li>
-    <li class="hover:scale-110 hover:text-indigo-400 transition-all duration-500 ease-in-out">
+    <li
+      class="hover:scale-110 hover:text-indigo-400 transition-all duration-500 ease-in-out"
+    >
       <a href="/quienesSomos">Colecciones</a>
     </li>
-    <li class="hover:scale-110 hover:text-indigo-400 transition-all duration-500 ease-in-out">
+    <li
+      class="hover:scale-110 hover:text-indigo-400 transition-all duration-500 ease-in-out"
+    >
       <a href="/contacto">Contacto</a>
     </li>
   </ul>
@@ -39,7 +47,7 @@ const isUserLoggedIn = user !== null;
   >
     {
       isUserLoggedIn ? (
-        <li>
+        <li class="flex items-center">
           <UserOptions />
         </li>
       ) : (
