@@ -9,6 +9,7 @@ const { nombre, precio, img, link } = Astro.props;
     class="flex flex-col gap-2 justify-center items-center m-4 font-cabinetGroteskBold"
   >
     <img
+      decoding="async"
       src={img}
       alt=`Imagen de la prenda ${nombre}`
       transition:name={`${img}`}
