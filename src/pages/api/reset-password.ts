@@ -17,7 +17,8 @@ export async function POST(context: APIContext) {
   }
 
   // Regex para validar la contraseña con una longitud mínima de 8 caracteres, al menos una letra mayúscula, una letra minúscula y un dígito
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,100}$/;
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,100}$/;
   if (
     typeof password !== "string" || !passwordRegex.test(password)
   ) {
@@ -32,7 +33,7 @@ export async function POST(context: APIContext) {
     [idUser],
   );
 
-  const storedPassword = oldPassword[0]?.user_password || '';
+  const storedPassword = oldPassword[0]?.user_password || "";
 
   if (storedPassword === password) {
     return context.redirect(
