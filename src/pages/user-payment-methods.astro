@@ -5,10 +5,12 @@ const user = Astro.locals.user;
 ---
 
 <Layout title="Emblem - Información de usuario">
-  <section class="h-[70vh] grid grid-cols-12 font-cabinetGroteskMedium">
-    <article class="col-span-3 relative bg-[#BBBBBB] text-black">
+  <section class="min-h-[70vh] grid grid-cols-12 font-cabinetGroteskMedium">
+    <article
+      class="order-2 md:order-1 col-span-12 md:col-span-4 lg:col-span-3 relative bg-[#BBBBBB] text-black"
+    >
       <h2
-        class="absolute top-10 left-5 text-2xl font-cabinetGroteskBold uppercase"
+        class="absolute top-10 left-5 hidden md:block md:text-xl font-cabinetGroteskBold uppercase"
       >
         Hola {user.name}
         {user.lastName}
@@ -135,18 +137,18 @@ const user = Astro.locals.user;
       </ul>
     </article>
     <article
-      class="col-span-9 flex flex-col gap-5 bg-[#AAAAAA] text-xl px-1 py-5 text-black"
+      class="order-1 md:order-2 col-span-12 md:col-span-8 lg:col-span-9 flex flex-col gap-5 bg-[#AAAAAA] text-xl px-1 py-5 text-black"
     >
       <form
         class="grid grid-cols-2 gap-5 overflow-y-auto max-h-[60vh] px-4"
         action="post"
         style="scrollbar-width: thin; scrollbar-color: #AAAAAA #FFFFFF;"
       >
-        <h2 class="text-2xl font-cabinetGroteskBold uppercase">
+        <h2 class="text-xl text-pretty font-cabinetGroteskBold uppercase">
           Métodos de pago:
         </h2>
         <hr class="border-1 border-black col-span-2" />
-        <label for="cardName">
+        <label class="col-span-2 lg:col-span-1" for="cardName">
           Nombre en la tarjeta:
           <input
             type="text"
@@ -156,7 +158,7 @@ const user = Astro.locals.user;
             class="border-2 border-black bg-[#BBBBBB] text-[#3C3C3C] rounded-md px-2 py-1 w-full"
           />
         </label>
-        <label for="cardNumber">
+        <label class="col-span-2 lg:col-span-1" for="cardNumber">
           Número de tarjeta:
           <input
             type="text"
@@ -166,22 +168,12 @@ const user = Astro.locals.user;
             class="border-2 border-black bg-[#BBBBBB] text-[#3C3C3C] rounded-md px-2 py-1 w-full"
           />
         </label>
-        <label for="expiryDate">
+        <label class="col-span-2 lg:col-span-1" for="expiryDate">
           Fecha de vencimiento:
           <input
             type="text"
             name="expiryDate"
             id="expiryDate"
-            value=""
-            class="border-2 border-black bg-[#BBBBBB] text-[#3C3C3C] rounded-md px-2 py-1 w-full"
-          />
-        </label>
-        <label for="cvv">
-          CVV:
-          <input
-            type="text"
-            name="cvv"
-            id="cvv"
             value=""
             class="border-2 border-black bg-[#BBBBBB] text-[#3C3C3C] rounded-md px-2 py-1 w-full"
           />
