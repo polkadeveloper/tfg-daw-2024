@@ -2,9 +2,9 @@
 import Layout from "@/layouts/Layout.astro";
 import EyeOff from "@/components/EyeOff.astro";
 import EyeVisible from "@/components/EyeVisible.astro";
-import { LoginForm } from "@/components/Login.tsx";
+import { LoginForm } from "@/components/React/Login";
 import Url from "@/components/Url.astro";
-import { Toast } from "@/components/Toast.tsx";
+import { Toast } from "@/components/React/Toast";
 ---
 
 <Layout title="Emblem - Inicio de sesión">
@@ -13,15 +13,4 @@ import { Toast } from "@/components/Toast.tsx";
       <Url />
     </LoginForm>
   </section>
-  {
-    Astro.url.searchParams.get("password") === "changed" && (
-      <Toast
-        message="Contraseña modificada con éxito"
-        position="top-right"
-        theme="dark"
-        client:load
-      />
-    )
-  }
 </Layout>
-
