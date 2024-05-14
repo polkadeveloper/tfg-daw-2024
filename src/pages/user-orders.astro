@@ -7,10 +7,10 @@ const data = await response.json();
 ---
 
 <Layout title="Emblem - Información de usuario">
-  <section class="h-[70vh] grid grid-cols-12 font-cabinetGroteskMedium">
-    <article class="col-span-3 relative bg-[#BBBBBB] text-black">
+  <section class="min-h-[70vh] grid grid-cols-12 font-cabinetGroteskMedium">
+    <article class="order-2 md:order-1 col-span-12 md:col-span-4 lg:col-span-3 relative bg-[#BBBBBB] text-black">
       <h2
-        class="absolute top-10 left-5 text-2xl font-cabinetGroteskBold uppercase"
+        class="absolute top-10 left-5 hidden md:block md:text-xl font-cabinetGroteskBold uppercase"
       >
         Hola {user.name}
         {user.lastName}
@@ -137,13 +137,13 @@ const data = await response.json();
       </ul>
     </article>
     <article
-      class="col-span-9 flex flex-col gap-5 bg-[#AAAAAA] text-xl px-1 py-5 text-black"
+      class="order-1 md:order-2 col-span-12 md:col-span-8 lg:col-span-9 flex flex-col gap-5 bg-[#AAAAAA] text-sm md:text-xl py-5 px-1 text-black"
     >
       <ul
         class="flex flex-col gap-5 overflow-y-auto max-h-[55vh] px-4"
         style="scrollbar-width: thin; scrollbar-color: #AAAAAA #FFFFFF;"
       >
-        <h2 class="text-2xl font-cabinetGroteskBold uppercase">Mis pedidos</h2>
+        <h2 class="text-xl font-cabinetGroteskBold uppercase">Mis pedidos</h2>
         <hr class="border-1 border-black" />
         {
           data && data.orders.length > 0 ? (
@@ -182,14 +182,15 @@ const data = await response.json();
             ).map((order) => (
               <>
                 <li class="flex flex-col justify-center gap-10">
-                  <div class="flex justify-evenly items-center">
-                    <div class="flex flex-col items-center">
+                  {/* class="flex justify-evenly items-center" */}
+                  <div class="grid grid-cols-12 gap-5 text-sm md:text-base">
+                    <div class="flex flex-col items-center col-span-6 lg:col-span-3">
                       <p class="font-cabinetGroteskBold">Nº de pedido</p>
                       <p>
                         {(order as { transaction_id: string }).transaction_id}
                       </p>
                     </div>
-                    <div class="flex flex-col items-center">
+                    <div class="flex flex-col items-center col-span-6 lg:col-span-3">
                       <p class="font-cabinetGroteskBold">Fecha de compra</p>
                       <p>
                         {new Date(
@@ -197,36 +198,36 @@ const data = await response.json();
                         ).toLocaleString()}
                       </p>
                     </div>
-                    <div class="flex flex-col items-center">
+                    <div class="flex flex-col items-center col-span-6 lg:col-span-3">
                       <p class="font-cabinetGroteskBold">Método de pago</p>
                       <p>
                         {(order as { payment_method: string }).payment_method}
                       </p>
                     </div>
-                    <div class="flex flex-col items-center">
+                    <div class="flex flex-col items-center col-span-6 lg:col-span-3">
                       <p class="font-cabinetGroteskBold">Estado</p>
                       <p>{(order as { status: string }).status}</p>
                     </div>
                   </div>
-                  <ul class="flex justify-center items-center gap-10">
+                  <ul class="flex justify-center items-center flex-wrap overflow-x-auto gap-10 lg:gap-20">
                     {(order as { items: any[] }).items.map((item) => (
-                      <li class="flex flex-col justify-center items-center overflow-x-auto">
+                      <li class="flex flex-col justify-center items-center gap-2">
                         <img
                           decoding="async"
                           src={`https://res.cloudinary.com/dle7lr00f/image/upload/v1709637639/${item.item_img_name}-back.webp`}
-                          class="w-40 h-auto transition-transform duration-300 transform aspect-[499/355]"
+                          class="w-56 h-auto transition-transform duration-300 transform aspect-[499/355]"
                           alt={`Imagen de la prenda ${item.item_name}`}
                         />
-                        <p class="text-lg font-cabinetGroteskBold">
-                          X{item.quantity} {item.item_name}
+                        <p class="text-sm md:text-base text-balance text-center font-cabinetGroteskBold">
+                          x{item.quantity} {item.item_name}
                         </p>
-                        <p class="text-lg font-cabinetGroteskBold">
+                        <p class="text-sm md:text-base font-cabinetGroteskBold">
                           {item.price}€
                         </p>
                       </li>
                     ))}
                   </ul>
-                  <p class="text-lg font-cabinetGroteskBold">
+                  <p class="text-sm md:text-base font-cabinetGroteskBold">
                     Total:{" "}
                     {(order as { items: any[] }).items.reduce(
                       (total, item) => total + Number(item.price),
