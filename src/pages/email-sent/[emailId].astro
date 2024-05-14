@@ -1,13 +1,17 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import { Toast } from "@/components/Toast.tsx";
+import { Toast } from "@/components/React/Toast";
 const { emailId } = Astro.params;
 ---
 
 <Layout title="Emblem - Email enviado">
-  <section class="min-h-[70vh] flex flex-col justify-center items-center px-5 py-10 gap-5">
+  <section
+    class="min-h-[70vh] flex flex-col justify-center items-center px-5 py-10 gap-5"
+  >
     <h1 class="text-4xl">Email enviado con éxito!</h1>
-    <p class="text-2xl">Revisa tu bandeja de entrada para restablecer la contraseña</p>
+    <p class="text-2xl">
+      Revisa tu bandeja de entrada para restablecer la contraseña
+    </p>
   </section>
 </Layout>
 
