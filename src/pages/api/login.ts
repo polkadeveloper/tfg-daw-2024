@@ -14,8 +14,13 @@ export async function POST(context: APIContext): Promise<Response> {
     username.length > 18 ||
     !/^[a-z0-9_-]+$/.test(username)
   ) {
-    return context.redirect(
-      "/login?error=invalid_username&toast=Error+al+iniciar+sesion",
+    return new Response(
+      JSON.stringify({
+        error: "invalid_username",
+        message:
+          "El nombre de usuario debe tener entre 6 y 18 caracteres y solo puede contener letras minúsculas, números, guiones bajos y guiones medios",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
   const password = formData.get("password");
@@ -25,8 +30,13 @@ export async function POST(context: APIContext): Promise<Response> {
   if (
     typeof password !== "string" || !passwordRegex.test(password)
   ) {
-    return context.redirect(
-      "/login?error=invalid_password&toast=Error+al+iniciar+sesion",
+    return new Response(
+      JSON.stringify({
+        error: "invalid_password",
+        message:
+          "La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un dígito",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
 
@@ -35,15 +45,23 @@ export async function POST(context: APIContext): Promise<Response> {
     [username.toLowerCase()],
   );
   if (rows.length === 0) {
-    return context.redirect(
-      "/login?error=incorrect_credentials&toast=Error+al+iniciar+sesion",
+    return new Response(
+      JSON.stringify({
+        error: "user_not_found",
+        message: "El usuario no existe",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
 
   const existingUser = rows[0];
   if (!existingUser || !existingUser.user_password) {
-    return context.redirect(
-      "/login?error=incorrect_credentials&toast=Error+al+iniciar+sesion",
+    return new Response(
+      JSON.stringify({
+        error: "incorrect_credentials",
+        message: "Credenciales incorrectas",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
 
@@ -52,8 +70,12 @@ export async function POST(context: APIContext): Promise<Response> {
     password,
   );
   if (validPassword === false) {
-    return context.redirect(
-      "/login?error=incorrect_credentials&toast=Error+al+iniciar+sesion",
+    return new Response(
+      JSON.stringify({
+        error: "incorrect_credentials",
+        message: "Credenciales incorrectas",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
 
@@ -65,5 +87,11 @@ export async function POST(context: APIContext): Promise<Response> {
     sessionCookie.attributes,
   );
 
-  return context.redirect("/?account=logged");
+  return new Response(
+    JSON.stringify({
+      success: "login_success",
+      message: "Inicio de sesión exitoso",
+    }),
+    { status: 200, headers: { "Content-Type": "application/json" } },
+  );
 }
