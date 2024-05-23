@@ -1,8 +1,13 @@
 import { Toaster, toast } from "sonner";
+import "@/styles/sonner.css";
 
 export function Toast(props: any) {
   setTimeout(() => {
-    toast.success(props.message);
+    if (props.error === "true") {
+      toast.error(props.message);
+    } else {
+      toast.success(props.message);
+    }
   });
   return (
     <Toaster
