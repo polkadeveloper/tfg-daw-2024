@@ -1,13 +1,11 @@
 ---
-import { SignupFormDemo } from "@/components/React/Input";
+import { SignupForm } from "@/components/React/SignUpForm";
 import Layout from "@/layouts/Layout.astro";
 import Url from "@/components/Url.astro";
 ---
 
 <Layout title="Emblem - Registro">
-  <section class="py-10 font-cabinetGroteskBold px-5">
-    <SignupFormDemo client:load>
-      <Url />
-    </SignupFormDemo>
+  <section class="py-10 font-cabinetGroteskBold px-2">
+    <SignupForm client:load />
   </section>
 </Layout>
