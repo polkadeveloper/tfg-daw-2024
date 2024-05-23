@@ -2,15 +2,17 @@
 import Layout from "@/layouts/Layout.astro";
 import EyeOff from "@/components/EyeOff.astro";
 import EyeVisible from "@/components/EyeVisible.astro";
-import { LoginForm } from "@/components/React/Login";
+import { LoginForm } from "@/components/React/LoginForm";
 import Url from "@/components/Url.astro";
 import { Toast } from "@/components/React/Toast";
+
+const passwordChanged = Astro.url.searchParams.get("password") === "changed";
 ---
 
 <Layout title="Emblem - Inicio de sesión">
-  <section class="px-5 py-10 flex justify-center items-center">
-    <LoginForm client:load>
-      <Url />
-    </LoginForm>
+  <section class="px-2 py-10 flex justify-center items-center">
+    <LoginForm passwordChanged={passwordChanged} client:load />
   </section>
 </Layout>
+
+
