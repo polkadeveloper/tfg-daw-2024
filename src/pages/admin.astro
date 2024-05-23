@@ -6,8 +6,15 @@ import Layout from "@/layouts/Layout.astro";
   <section
     class="min-h-[70vh] px-5 py-2 flex flex-col gap-5 justify-center items-center font-cabinetGroteskBold"
   >
-    <h1 class="text-2xl lg:text-4xl">Panel de administración</h1>
-    <h3>¿Que deseas realizar?</h3>
-    <article class=""></article>
+    <article class="relative flex flex-col gap-10 justify-center items-center bg-black/40 border-2 border-white p-20 rounded-lg">
+      <h1 class="text-2xl lg:text-4xl">Panel de administración</h1>
+      <h2 class="text-2xl">¿Que deseas realizar?</h2>
+      <article class="flex justify-center items-center text-black gap-10">
+        <button class="bg-green-400 px-2 py-2 rounded-lg">Crear</button>
+        <button class="bg-blue-400 px-2 py-2 rounded-lg">Actualizar</button>
+        <button class="bg-red-400 px-2 py-2 rounded-lg">Eliminar</button>
+      </article>
+      <p class="absolute top-2 right-2 font-bold">admin @ polkadev</p>
+    </article>
   </section>
 </Layout>
