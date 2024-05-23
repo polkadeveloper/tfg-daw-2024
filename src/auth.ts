@@ -29,6 +29,12 @@ export const lucia = new Lucia(adapter, {
       email: attributes.user_email,
       name: attributes.first_name,
       lastName: attributes.last_name,
+      address: attributes.address,
+      floor: attributes.floor,
+      postalCode: attributes.postal_code,
+      city: attributes.city,
+      province: attributes.province,
+      country: attributes.country,
     };
   },
 });
@@ -46,4 +52,10 @@ interface DatabaseUserAttributes {
   user_email: string;
   first_name: string;
   last_name: string;
+  address: string;
+  floor: string;
+  postal_code: string;
+  city: string;
+  province: string;
+  country: string;
 }
