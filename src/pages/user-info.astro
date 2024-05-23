@@ -1,12 +1,16 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-
+import { Toast } from "@/components/React/Toast";
+import { UpdateUserInfoForm } from "@/components/React/UpdateUserInfoForm";
+import WrapperComponent from "@/components/React/WrapperComponent";
 const user = Astro.locals.user;
 ---
 
 <Layout title="Emblem - Información de usuario">
   <section class="min-h-[70vh] grid grid-cols-12 font-cabinetGroteskMedium">
-    <article class="order-2 md:order-1 col-span-12 md:col-span-4 lg:col-span-3 relative bg-[#BBBBBB] text-black">
+    <article
+      class="order-2 md:order-1 col-span-12 md:col-span-4 lg:col-span-3 relative bg-[#BBBBBB] text-black"
+    >
       <h2
         class="absolute top-10 left-5 hidden md:block md:text-xl font-cabinetGroteskBold uppercase"
       >
@@ -135,128 +139,22 @@ const user = Astro.locals.user;
       </ul>
     </article>
     <article
-      class="order-1 md:order-2 col-span-12 md:col-span-8 lg:col-span-9 flex flex-col gap-5 bg-[#AAAAAA] text-xl py-5 px-1 text-black"
+      class="relative max-h-[70vh] order-1 md:order-2 col-span-12 md:col-span-8 lg:col-span-9 flex flex-col gap-5 bg-[#AAAAAA] text-xl py-5 px-1 text-black"
     >
-      <form
-        class="grid grid-cols-2 gap-5 overflow-y-auto max-h-[60vh] px-4 text-lg"
-        action="post"
-        style="scrollbar-width: thin; scrollbar-color: #AAAAAA #FFFFFF;"
-      >
-        <h2 class="text-xl font-cabinetGroteskBold uppercase">
-          Datos personales:
-        </h2>
-        <hr class="border-1 border-black col-span-2" />
-        <label class="col-span-2 md:col-span-1" for="name">
-          Nombre:
-          <input
-            type="text"
-            name="name"
-            id="name"
-            value={user.name}
-            class="border-2 border-black bg-[#BBBBBB] text-[#3C3C3C] rounded-md px-2 py-1 w-full text-lg"
-          />
-        </label>
-        <label class="col-span-2 md:col-span-1" for="lastName">
-          Apellidos:
-          <input
-            type="text"
-            name="lastName"
-            id="lastName"
-            value={user.lastName}
-            class="border-2 border-black bg-[#BBBBBB] text-[#3C3C3C] rounded-md px-2 py-1 w-full text-lg"
-          />
-        </label>
-        <label class="col-span-2 md:col-span-1" for="username">
-          Nombre de usuario:
-          <input
-            type="text"
-            name="username"
-            id="username"
-            value={user.username}
-            class="border-2 border-black bg-[#BBBBBB] text-[#3C3C3C] rounded-md px-2 py-1 w-full text-lg"
-          />
-        </label>
-        <label class="col-span-2 md:col-span-1" for="email">
-          Correo:
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={user.email}
-            class="border-2 border-black bg-[#BBBBBB] text-[#3C3C3C] rounded-md px-2 py-1 w-full text-lg"
-          />
-        </label>
-        <hr class="border-1 border-black col-span-2" />
-        <h2 class="text-xl font-cabinetGroteskBold uppercase col-span-2">
-          Dirección de Facturación:
-        </h2>
-        <label class="col-span-2 md:col-span-1" for="address">
-          Dirección:
-          <input
-            type="text"
-            name="address"
-            id="address"
-            value="Calle Juan de Armas, 17"
-            class="border-2 border-black bg-[#BBBBBB] text-[#3C3C3C] rounded-md px-2 py-1 w-full text-lg"
-          />
-        </label>
-        <label class="col-span-2 md:col-span-1" for="more-info">
-          Piso/Escalera (opcional):
-          <input
-            type="text"
-            name="more-info"
-            id="more-info"
-            value="Piso 2B"
-            class="border-2 border-black bg-[#BBBBBB] text-[#3C3C3C] rounded-md px-2 py-1 w-full text-lg"
-          />
-        </label>
-        <label class="col-span-2 md:col-span-1" for="postal-code">
-          Código Postal:
-          <input
-            type="text"
-            name="postal-code"
-            id="postal-code"
-            value="38001"
-            class="border-2 border-black bg-[#BBBBBB] text-[#3C3C3C] rounded-md px-2 py-1 w-full text-lg"
-          />
-        </label>
-        <label class="col-span-2 md:col-span-1" for="city">
-          Ciudad:
-          <input
-            type="text"
-            name="city"
-            id="city"
-            value="Santa Cruz de Tenerife"
-            class="border-2 border-black bg-[#BBBBBB] text-[#3C3C3C] rounded-md px-2 py-1 w-full text-lg"
-          />
-        </label>
-        <label class="col-span-2 md:col-span-1" for="provincia">
-          Provincia:
-          <input
-            type="text"
-            name="provincia"
-            id="provincia"
-            value="Santa Cruz de Tenerife"
-            class="border-2 border-black bg-[#BBBBBB] text-[#3C3C3C] rounded-md px-2 py-1 w-full text-lg"
-          />
-        </label>
-        <label class="col-span-2 md:col-span-1" for="country">
-          País:
-          <input
-            type="text"
-            name="country"
-            id="country"
-            value="España"
-            class="border-2 border-black bg-[#BBBBBB] text-[#3C3C3C] rounded-md px-2 py-1 w-full text-lg"
-          />
-        </label>
-        <hr class="border-1 border-black col-span-2" />
-        <button
-          class="bg-black text-white px-2 py-1 rounded-md text-lg mt-2 col-span-2"
-        >
-          Guardar
-        </button>
-      </form>
+      <WrapperComponent
+        id={user.id}
+        name={user.name}
+        lastName={user.lastName}
+        username={user.username}
+        email={user.email}
+        address={user.address}
+        floor={user.floor}
+        postalCode={user.postalCode}
+        city={user.city}
+        province={user.province}
+        country={user.country}
+        client:load
+      />
     </article>
   </section>
 </Layout>
