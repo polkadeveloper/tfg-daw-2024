@@ -2,6 +2,14 @@ import { type APIContext } from "astro";
 import { connection as db } from "@/pages/api/items";
 import { type RowDataPacket } from "mysql2/promise";
 import { Scrypt } from "lucia";
+// Importamos resend
+import { Resend } from "resend";
+// Importamos dotenv para poder acceder a las variables de entorno
+import "dotenv/config";
+// Creamos una instancia de resend
+const resend = new Resend(process.env.RESEND_API_KEY);
+// Importamos el Email template que hemos creado en React
+import { EmblemPasswordChanged } from "@/components/React/emails/PasswordChangedTemplate";
 
 export async function POST(context: APIContext) {
   const formData = await context.request.formData();
@@ -11,8 +19,12 @@ export async function POST(context: APIContext) {
   const confirmNewPassword = formData.get("confirmNewPassword");
 
   if (newPassword !== confirmNewPassword) {
-    return context.redirect(
-      `/user-edit-password/?error=passwords_mismatch&toast=Error+al+cambiar+la+contrasena+,+intentalo+de+nuevo`,
+    return new Response(
+      JSON.stringify({
+        error: "passwords_do_not_match",
+        message: "Las contraseñas no coinciden",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
 
@@ -23,8 +35,13 @@ export async function POST(context: APIContext) {
     typeof newPassword !== "string" || !passwordRegex.test(newPassword)
   ) {
     // Si la contraseña no es válida, redirigimos al usuario a la página de registro con un mensaje de error
-    return context.redirect(
-      "/user-edit-password?error=invalid_password&toast=Error+al+cambiar+la+contrasena+,+intentalo+de+nuevo",
+    return new Response(
+      JSON.stringify({
+        error: "invalid_password",
+        message:
+          "La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula, un dígito y un carácter especial",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
   const [oldPassword] = await db.query<RowDataPacket[]>(
@@ -33,6 +50,13 @@ export async function POST(context: APIContext) {
   );
 
   const storedPassword = oldPassword[0]?.user_password || "";
+
+  // Primero va el hash y luego la password en Scrypt
+  const isSamePassword = await new Scrypt().verify(
+    storedPassword.toString(),
+    newPassword.toString(),
+  );
+
   // Primero va el hash y luego la password en Scrypt
   const isCurrentPasswordCorrect = await new Scrypt().verify(
     storedPassword.toString(),
@@ -40,14 +64,22 @@ export async function POST(context: APIContext) {
   );
 
   if (!isCurrentPasswordCorrect) {
-    return context.redirect(
-      `/user-edit-password/?error=incorrect_current_password&toast=Error+al+cambiar+la+contrasena+,+intentalo+de+nuevo`,
+    return new Response(
+      JSON.stringify({
+        error: "incorrect_password",
+        message: "La contraseña actual es incorrecta",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
 
-  if (storedPassword === newPassword) {
-    return context.redirect(
-      `/reset-password/?error=same_password&toast=Error+al+cambiar+la+contrasena+,+intentalo+de+nuevo`,
+  if (isSamePassword) {
+    return new Response(
+      JSON.stringify({
+        error: "same_password",
+        message: "La nueva contraseña no puede ser igual a la anterior",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
 
@@ -58,11 +90,38 @@ export async function POST(context: APIContext) {
     [hashedPassword, idUser],
   );
 
+  // Obtenemos el nombre de usuario del usuario
+  const [username] = await db.query<RowDataPacket[]>(
+    "SELECT user_name FROM users WHERE id = ?",
+    [idUser],
+  );
+
   if (rows.length === 0) {
-    return context.redirect(
-      `/reset-password/${idUser}?error=invalid_user&toast=Error+al+cambiar+la+contrasena+,+intentalo+de+nuevo`,
+    return new Response(
+      JSON.stringify({
+        error: "update_failed",
+        message: "No se ha podido actualizar la contraseña",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
 
-  return context.redirect(`/login?success=changed`);
+  // Enviamos un correo electrónico al usuario con un enlace para restablecer la contraseña
+  await resend.emails.send({
+    from: "Polkadev <alvarobarcena@polkadev.es>",
+    to: ["alvarobarcena27@gmail.com"],
+    subject: "Has cambiado tu contraseña en Emblem",
+    react: EmblemPasswordChanged({
+      username: username[0]?.user_name || "",
+      updatedDate: new Date(),
+    }),
+  });
+
+  return new Response(
+    JSON.stringify({
+      error: "success_password_update",
+      message: "La contraseña se ha actualizado correctamente",
+    }),
+    { status: 200, headers: { "Content-Type": "application/json" } },
+  );
 }
