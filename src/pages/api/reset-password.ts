@@ -11,8 +11,12 @@ export async function POST(context: APIContext) {
   const idUser = formData.get("idUser");
 
   if (password !== repeatPassword) {
-    return context.redirect(
-      `/reset-password/${idUser}?error=passwords_mismatch&toast=Error+al+cambiar+la+contrasena+,+intentalo+de+nuevo`,
+    return new Response(
+      JSON.stringify({
+        error: "passwords_do_not_match",
+        message: "Las contraseñas no coinciden",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
 
@@ -23,8 +27,13 @@ export async function POST(context: APIContext) {
     typeof password !== "string" || !passwordRegex.test(password)
   ) {
     // Si la contraseña no es válida, redirigimos al usuario a la página de registro con un mensaje de error
-    return context.redirect(
-      "/signup?error=invalid_password&toast=Error+al+cambiar+la+contrasena+,+intentalo+de+nuevo",
+    return new Response(
+      JSON.stringify({
+        error: "invalid_password",
+        message:
+          "La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un dígito",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
 
@@ -35,9 +44,18 @@ export async function POST(context: APIContext) {
 
   const storedPassword = oldPassword[0]?.user_password || "";
 
-  if (storedPassword === password) {
-    return context.redirect(
-      `/reset-password/${idUser}?error=same_password&toast=Error+al+cambiar+la+contrasena+,+intentalo+de+nuevo`,
+  const isSamePassword = await new Scrypt().verify(
+    storedPassword.toString(),
+    password.toString(),
+  );
+
+  if (isSamePassword) {
+    return new Response(
+      JSON.stringify({
+        error: "same_password",
+        message: "La nueva contraseña no puede ser igual a la anterior",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
 
@@ -49,10 +67,20 @@ export async function POST(context: APIContext) {
   );
 
   if (rows.length === 0) {
-    return context.redirect(
-      `/reset-password/${idUser}?error=invalid_user&toast=Error+al+cambiar+la+contrasena+,+intentalo+de+nuevo`,
+    return new Response(
+      JSON.stringify({
+        error: "invalid_user",
+        message: "El usuario no existe",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
 
-  return context.redirect(`/login?password=changed`);
+  return new Response(
+    JSON.stringify({
+      success: "password_updated",
+      message: "La contraseña ha sido actualizada correctamente",
+    }),
+    { status: 200, headers: { "Content-Type": "application/json" } },
+  );
 }
