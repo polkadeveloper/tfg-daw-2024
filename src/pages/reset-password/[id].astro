@@ -7,8 +7,9 @@ const { id } = Astro.params;
 ---
 
 <Layout title="Emblem - Cambia tu contraseña">
-  <section class="min-h-[70vh] flex flex-col justify-center items-center px-5 py-10">
-    <h1>Cambia aqui tu contraseña {id}</h1>
+  <section
+    class="min-h-[70vh] flex flex-col justify-center items-center px-5 py-10"
+  >
     <ResetPasswordForm id={id} client:load>
       <Url />
     </ResetPasswordForm>
