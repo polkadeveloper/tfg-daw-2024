@@ -5,6 +5,14 @@ import { Scrypt } from "lucia";
 import { connection as db } from "@/pages/api/items";
 import type { APIContext } from "astro";
 import type { RowDataPacket } from "mysql2/promise";
+// Importamos resend
+import { Resend } from "resend";
+// Importamos dotenv para poder acceder a las variables de entorno
+import "dotenv/config";
+// Creamos una instancia de resend
+const resend = new Resend(process.env.RESEND_API_KEY);
+// Importamos el Email template que hemos creado en React
+import { WelcomeTemplate } from "@/components/React/emails/WelcomeTemplate";
 
 // Definimos una función asíncrona POST que será utilizada para manejar las solicitudes POST a nuestra API
 export async function POST(context: APIContext): Promise<Response> {
@@ -14,6 +22,91 @@ export async function POST(context: APIContext): Promise<Response> {
   const firstName = formData.get("firstname");
   const lastName = formData.get("lastname");
   const email = formData.get("email");
+  const address = formData.get("address");
+  const floor = formData.get("floor");
+  const postalCode = formData.get("postalCode");
+  const city = formData.get("city");
+  const province = formData.get("province");
+  const country = formData.get("country");
+
+  // Comprobar que los datos no están vacíos
+  if (
+    !username || !firstName || !lastName || !email || !address ||
+    !postalCode || !city || !province || !country
+  ) {
+    return new Response(
+      JSON.stringify({
+        error: "empty_fields",
+        message: "Por favor, rellena todos los campos",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
+    );
+  }
+
+  // Validamos la dirección
+  if (
+    typeof address !== "string" || address.length === 0 || address.length > 100
+  ) {
+    return new Response(
+      JSON.stringify({
+        error: "invalid_address",
+        message: "Por favor, introduce una dirección válida",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
+    );
+  }
+
+  // Validamos el código postal
+  if (
+    typeof postalCode !== "string" || postalCode.length < 5 ||
+    postalCode.length > 10
+  ) {
+    return new Response(
+      JSON.stringify({
+        error: "invalid_postalCode",
+        message: "Por favor, introduce un código postal válido",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
+    );
+  }
+
+  // Validamos la ciudad
+  if (typeof city !== "string" || city.length === 0 || city.length > 50) {
+    return new Response(
+      JSON.stringify({
+        error: "invalid_city",
+        message: "Por favor, introduce una ciudad válida",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
+    );
+  }
+
+  // Validamos la provincia
+  if (
+    typeof province !== "string" || province.length === 0 ||
+    province.length > 50
+  ) {
+    return new Response(
+      JSON.stringify({
+        error: "invalid_province",
+        message: "Por favor, introduce una provincia válida",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
+    );
+  }
+
+  // Validamos el país
+  if (
+    typeof country !== "string" || country.length === 0 || country.length > 50
+  ) {
+    return new Response(
+      JSON.stringify({
+        error: "invalid_country",
+        message: "Por favor, introduce un país válido",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
+    );
+  }
 
   // Validamos el nombre de usuario
   if (
@@ -22,9 +115,14 @@ export async function POST(context: APIContext): Promise<Response> {
     username.length > 18 ||
     !/^[a-z0-9_-]+$/.test(username)
   ) {
-    // Si el nombre de usuario no es válido, redirigimos al usuario a la página de registro con un mensaje de error
-    return context.redirect(
-      "/signup?error=invalid_username&toast=Error+al+crear+la+cuenta+,+intentalo+de+nuevo",
+    // Si el nombre de usuario no es válido, devolvemos un error al cliente
+    return new Response(
+      JSON.stringify({
+        error: "invalid_username",
+        message:
+          "El nombre de usuario debe tener entre 6 y 18 caracteres y solo puede contener letras minúsculas, números, guiones bajos y guiones medios",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
 
@@ -36,9 +134,14 @@ export async function POST(context: APIContext): Promise<Response> {
   if (
     typeof password !== "string" || !passwordRegex.test(password)
   ) {
-    // Si la contraseña no es válida, redirigimos al usuario a la página de registro con un mensaje de error
-    return context.redirect(
-      "/signup?error=invalid_password&toast=Error+al+crear+la+cuenta+,+intentalo+de+nuevo",
+    // Si la contraseña no es válida, devolvemos un error al cliente
+    return new Response(
+      JSON.stringify({
+        error: "invalid_password",
+        message:
+          "La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un dígito",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
 
@@ -53,9 +156,14 @@ export async function POST(context: APIContext): Promise<Response> {
     [username],
   );
   if (existingUser.length > 0) {
-    // Si el usuario ya existe, redirigimos al usuario a la página de registro con un mensaje de error
-    return context.redirect(
-      "/signup?error=username_exists&toast=Error+al+crear+la+cuenta+,+intentalo+de+nuevo",
+    // Si el usuario ya existe, devolvemos un error al cliente
+    return new Response(
+      JSON.stringify({
+        error: "user_exists",
+        message:
+          "El nombre de usuario introducido ya existe, por favor, elige otro nombre de usuario",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
 
@@ -66,9 +174,14 @@ export async function POST(context: APIContext): Promise<Response> {
     email.length > 100 ||
     !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email)
   ) {
-    // Si el email no es válido, redirigimos al usuario a la página de registro con un mensaje de error
-    return context.redirect(
-      "/signup?error=invalid_email&toast=Error+al+crear+la+cuenta+,+intentalo+de+nuevo",
+    // Si el email no es válido, devolvemos un error al cliente
+    return new Response(
+      JSON.stringify({
+        error: "invalid_email",
+        message:
+          "Por favor, introduce una dirección de correo electrónico válida",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
 
@@ -79,16 +192,34 @@ export async function POST(context: APIContext): Promise<Response> {
   );
 
   if (existingEmail.length > 0) {
-    // Si el email ya existe, redirigimos al usuario a la página de registro con un mensaje de error
-    return context.redirect(
-      "/signup?error=email_exists&toast=Error+al+crear+la+cuenta+,+intentalo+de+nuevo",
+    // Si el email ya existe, devolvemos un error al cliente
+    return new Response(
+      JSON.stringify({
+        error: "email_exists",
+        message:
+          "El email introducido ya está registrado, por favor, introduce otro email",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
 
   // Si el usuario no existe, lo insertamos en la base de datos
   await db.query(
-    "INSERT INTO users (id, user_name, user_password, first_name, last_name, user_email) VALUES (?, ?, ?, ?, ?, ?)",
-    [userId, username, hashedPassword, firstName, lastName, email],
+    "INSERT INTO users (id, user_name, user_password, first_name, last_name, user_email, address, floor, postal_code, city, province, country) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    [
+      userId,
+      username,
+      hashedPassword,
+      firstName,
+      lastName,
+      email,
+      address,
+      floor,
+      postalCode,
+      city,
+      province,
+      country,
+    ],
   );
 
   // Creamos una nueva sesión para el usuario y establecemos la cookie de sesión
@@ -100,6 +231,22 @@ export async function POST(context: APIContext): Promise<Response> {
     sessionCookie.attributes,
   );
 
-  // Redirigimos al usuario a la página de inicio con un mensaje de éxito
-  return context.redirect("/?account=created");
+  // Enviamos un correo electrónico al usuario con un enlace para restablecer la contraseña
+  await resend.emails.send({
+    from: "Polkadev <alvarobarcena@polkadev.es>",
+    to: [email],
+    subject: "Bienvenido a tu cuenta de Emblem ",
+    react: WelcomeTemplate({
+      username: username,
+    }),
+  });
+
+  // Devolvemos una respuesta de éxito al cliente
+  return new Response(
+    JSON.stringify({
+      success: "account_created",
+      message: "Cuenta creada con éxito!",
+    }),
+    { status: 200, headers: { "Content-Type": "application/json" } },
+  );
 }
