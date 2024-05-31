@@ -26,7 +26,9 @@ export function ChangePasswordForm(props: any) {
     if (
       newPasswordRef.current?.value !== confirmNewPasswordRef.current?.value
     ) {
-      toast.error("Las contraseñas no coinciden");
+      toast.error("Las contraseñas no coinciden", {
+        duration: 1500,
+      });
       return;
     }
 
