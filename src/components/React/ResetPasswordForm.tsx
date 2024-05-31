@@ -19,7 +19,9 @@ export function ResetPasswordForm(props: any) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (passwordRef.current?.value !== repeatPasswordRef.current?.value) {
-      toast.error("Las contraseñas no coinciden");
+      toast.error("Las contraseñas no coinciden", {
+        duration: 1500,
+      });
       return;
     }
     const formData = new FormData();
