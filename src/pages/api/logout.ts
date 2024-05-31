@@ -19,5 +19,5 @@ export async function POST(context: APIContext): Promise<Response> {
 
   await lucia.deleteExpiredSessions();
 
-  return context.redirect("/");
+  return context.redirect("/login");
 }
