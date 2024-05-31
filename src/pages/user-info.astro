@@ -4,6 +4,17 @@ import { Toast } from "@/components/React/Toast";
 import { UpdateUserInfoForm } from "@/components/React/UpdateUserInfoForm";
 import WrapperComponent from "@/components/React/WrapperComponent";
 const user = Astro.locals.user;
+import { SignIn, SignOut } from "auth-astro/components";
+import { getSession } from "auth-astro/server";
+const sessionGoogle = await getSession(Astro.request);
+const userId = sessionGoogle?.user.id;
+const userName = sessionGoogle?.user.name;
+const userEmail = sessionGoogle?.user.email;
+const userImage = sessionGoogle?.user.image;
+
+if (!user) {
+  return Astro.redirect("/login");
+}
 ---
 
 <Layout title="Emblem - Información de usuario">
@@ -14,8 +25,12 @@ const user = Astro.locals.user;
       <h2
         class="absolute top-10 left-5 hidden md:block md:text-xl font-cabinetGroteskBold uppercase"
       >
-        Hola {user.name}
-        {user.lastName}
+        {
+          (user &&
+            `Hola ${user.name}
+        ${user.lastName}`) ||
+            (sessionGoogle && userName)
+        }
       </h2>
       <ul
         class="w-full flex flex-col justify-center items-center h-full text-lg"
@@ -142,17 +157,17 @@ const user = Astro.locals.user;
       class="relative max-h-[70vh] order-1 md:order-2 col-span-12 md:col-span-8 lg:col-span-9 flex flex-col gap-5 bg-[#AAAAAA] text-xl py-5 px-1 text-black"
     >
       <WrapperComponent
-        id={user.id}
-        name={user.name}
-        lastName={user.lastName}
-        username={user.username}
-        email={user.email}
-        address={user.address}
-        floor={user.floor}
-        postalCode={user.postalCode}
-        city={user.city}
-        province={user.province}
-        country={user.country}
+        id={user ? user.id : userId}
+        name={user ? user.name : userName}
+        lastName={user ? user.lastName : ""}
+        username={user ? user.username : userName}
+        email={user ? user.email : userEmail}
+        address={user ? user.address : ""}
+        floor={user ? user.floor : ""}
+        postalCode={user ? user.postalCode : ""}
+        city={user ? user.city : ""}
+        province={user ? user.province : ""}
+        country={user ? user.country : ""}
         client:load
       />
     </article>
