@@ -11,7 +11,9 @@ export function ForgotPasswordForm(props: any) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!emailRef.current?.value) {
-      return toast.error("Por favor, introduce tu correo electrónico");
+      return toast.error("Por favor, introduce tu correo electrónico", {
+        duration: 1500,
+      });
     }
     const formData = new FormData();
     formData.append("email", emailRef.current?.value || "");
@@ -59,7 +61,9 @@ export function ForgotPasswordForm(props: any) {
     const toastMessage = urlParams.get("toast");
     if (toastMessage) {
       setTimeout(() => {
-        toast.error(toastMessage);
+        toast.error(toastMessage, {
+          duration: 1500,
+        });
       }, 0);
     }
   }, []);
