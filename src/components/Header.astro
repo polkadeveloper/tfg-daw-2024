@@ -1,5 +1,7 @@
 ---
 import UserOptions from "./UserOptions.astro";
+import { getSession } from "auth-astro/server";
+const session = await getSession(Astro.request);
 
 const user = Astro.locals.user;
 const isUserLoggedIn = user !== null;
@@ -48,7 +50,7 @@ const isUserLoggedIn = user !== null;
     class="hidden md:flex justify-center items-center cursor-pointer font-cabinetGroteskBold md:col-span-3"
   >
     {
-      isUserLoggedIn ? (
+      (isUserLoggedIn || session) ? (
         <li class="flex items-center">
           <UserOptions />
         </li>
