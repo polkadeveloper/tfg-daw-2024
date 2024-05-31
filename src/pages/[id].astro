@@ -2,6 +2,11 @@
 import Layout from "@/layouts/Layout.astro";
 import { arrayTallasPorItemId } from "@/services/sizesInfo";
 import AddToCartForm from "@/components/React/AddToCartForm";
+import { getSession } from "auth-astro/server";
+// Usuario autenticado con cuenta de Google
+const sessionGoogle = await getSession(Astro.request);
+// Usuario autenticado con cuenta de Emblem
+const user = Astro.locals.user;
 
 // Desestructuración de propiedades proporcionadas por Astro
 const { id } = Astro.params;
@@ -84,6 +89,8 @@ const productoAgotado = arrayTallasPorItemId[item_id - 1].tallas.every(
         <!-- Botón "Add to cart" -->
         <AddToCartForm
           client:only
+          user={user}
+          sessionGoogle={sessionGoogle}
           itemInfo={{
             id: item_id,
             collection_id: collection_id,
