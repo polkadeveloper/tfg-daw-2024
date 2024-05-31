@@ -2,21 +2,25 @@
 import Card from "@/components/Card.astro";
 import Layout from "@/layouts/Layout.astro";
 import { Toast } from "@/components/React/Toast";
+import { getSession } from "auth-astro/server";
+
+const sessionGoogle = await getSession(Astro.request);
 
 const ip = Astro.clientAddress;
 console.log(ip);
 const user = Astro.locals.user;
 const session = Astro.locals.session;
-if (!user) {
+if (!user && !sessionGoogle) {
   // return Astro.redirect("/login");
   console.log("No hay usuario");
 } else {
   console.log(user);
   console.log(session);
+  console.log(sessionGoogle);
 }
 ---
 
-<Layout title="Emblem - Inicio">  
+<Layout title="Emblem - Inicio">
   <section class="pt-5">
     <h1
       class="text-6xl md:text-7xl m-4 md:m-6 text-left md:text-center font-cabinetGroteskBold"
