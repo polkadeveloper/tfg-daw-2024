@@ -2,13 +2,13 @@
 import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
 import { ViewTransitions } from "astro:transitions";
-import CartFlyoutToggle from "@/components/React/CartFlyoutToggle";
 import CartFlyout from "@/components/React/CartFlyout";
-import AddToCartForm from "@/components/React/AddToCartForm";
-import type { only } from "node:test";
+import { getSession } from "auth-astro/server";
 interface Props {
   title: string;
 }
+const sessionGoogle = await getSession(Astro.request);
+const user = Astro.locals.user;
 
 const { title } = Astro.props;
 ---
@@ -36,7 +36,8 @@ const { title } = Astro.props;
   >
     <Header />
 
-    <CartFlyout client:only="react" />
+    {(user || sessionGoogle) && <CartFlyout client:only="react" />}
+
     <slot />
     <Footer />
     <style is:global>
