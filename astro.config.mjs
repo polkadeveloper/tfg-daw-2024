@@ -3,11 +3,11 @@ import vercel from '@astrojs/vercel/serverless';
 import tailwind from "@astrojs/tailwind";
 import react from "@astrojs/react";
 
-import db from "@astrojs/db";
+import auth from "auth-astro";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind(), react(), db()],
+  integrations: [tailwind(), react(), auth()],
   base: "/",
   output: "server",
   adapter: vercel({
