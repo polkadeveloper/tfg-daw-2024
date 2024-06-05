@@ -1,8 +1,6 @@
 "use client";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Toaster, toast } from "sonner";
-import EyeVisible from "@/components/EyeVisible.astro";
-import EyeOff from "@/components/EyeOff.astro";
 import "@/styles/formStyles.css";
 import "@/styles/sonner.css";
 
