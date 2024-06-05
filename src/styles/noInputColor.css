@@ -1,0 +1,13 @@
+input.no-autofill-color:-webkit-autofill,
+input.no-autofill-color:-webkit-autofill:hover, 
+input.no-autofill-color:-webkit-autofill:focus, 
+input.no-autofill-color:-webkit-autofill:active  {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: black !important;
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  border: 2px solid black !important;
+}
+input:focus {
+  outline: none !important;
+  border: 2px solid black !important;
+}
