@@ -1,0 +1,29 @@
+---
+import Stripe from "stripe";
+const stripe = new Stripe(import.meta.env.STRIPE_PRIVATE_API_KEY);
+const sessionID = Astro.url.searchParams.get("session_id");
+
+let session;
+try {
+  session = await stripe.checkout.sessions.retrieve(sessionID);
+} catch (e) {
+  // Redirige a los usuarios de vuelta a la página de checkout si la sesión no es válida
+  return Astro.redirect("/checkout");
+}
+
+const { name, email, address, phone, tax_exempt, tax_ids } =
+  session.customer_details;
+---
+
+<div>
+  <h1>Thank you for your purchase, {name}!</h1>
+  <p>We've sent a receipt to {email}.</p>
+  <p>Your order will be shipped to:</p>
+  <p>{address.line1}</p>
+  <p>{address.line2}</p>
+  <p>{address.city}, {address.state} {address.postal_code}</p>
+  <p>{address.country}</p>
+  <p>{phone}</p>
+  <p>{tax_exempt ? "You are tax exempt." : "You are not tax exempt."}</p>
+  <p>{tax_ids.map((tax_id) => tax_id.type + ": " + tax_id.value)}</p>
+</div>
