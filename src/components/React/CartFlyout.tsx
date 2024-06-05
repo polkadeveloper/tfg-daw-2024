@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useStore } from "@nanostores/react";
 import {
   isCartOpen,
@@ -16,6 +16,14 @@ export default function CartFlyout() {
 
   const [animationParent] = useAutoAnimate();
 
+  // Nuevo estado para manejar la renderización del lado del servidor
+  const [isServer, setIsServer] = useState(true);
+
+  useEffect(() => {
+    setIsServer(false);
+  }, []);
+
+  // Si el carrito está abierto, deshabilita el scroll del body
   useEffect(() => {
     if ($isCartOpen) {
       document.body.style.overflow = "hidden";
@@ -24,30 +32,47 @@ export default function CartFlyout() {
     }
   }, [$isCartOpen]);
 
+  // Carga los datos del carrito del almacenamiento local al montar el componente
+  useEffect(() => {
+    const initialCartItems = JSON.parse(
+      localStorage.getItem("cartItems") || "{}"
+    );
+
+    for (const key in initialCartItems) {
+      cartItems.setKey(key, initialCartItems[key]);
+    }
+  }, []);
+
+  // Guarda los datos del carrito en el almacenamiento local cuando se actualizan
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify($cartItems));
+  }, [$cartItems]);
+
   return (
     <>
       {$isCartOpen && (
         <div className="fixed inset-0 bg-black opacity-50 backdrop-blur-sm z-10"></div>
       )}
       <aside
-        className={`fixed flex flex-col justify-between transition-all duration-500 ease-in-out gap-5 font-cabinetGroteskBold w-full md:w-[35%] h-full backdrop-blur-xl bg-white/90 text-black top-0 right-0 z-10 ${
+        className={`bg-[#2d007a]/80 fixed flex flex-col justify-between transition-all duration-500 ease-in-out gap-5 font-cabinetGroteskBold w-full md:w-[55%] xl:w-[35%] h-full backdrop-blur-xl text-black top-0 right-0 z-10 ${
           $isCartOpen
             ? "translate-x-0 opacity-100"
             : "translate-x-full opacity-0"
         }`}
       >
-        {Object.values($cartItems).length ? (
+        {/* Asegúrate de que el estado inicial del carrito sea el mismo en el servidor y en el cliente */}
+        {!isServer && Object.values($cartItems).length ? (
           <>
             <header
               id="headerCart"
-              className="w-full sticky top-0 left-0 h-[15vh] bg-transparent flex items-center justify-between px-10"
+              className="bg-[#2d007a]/90 text-white w-full sticky top-0 left-0 h-[15vh] flex items-center justify-between px-6"
             >
-              <h2 className="text-3xl">Tu carrito</h2>
+              <h2 className="text-2xl xl:text-3xl">Tu carrito</h2>
               <button className="" onClick={() => isCartOpen.set(!$isCartOpen)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="32"
-                  height="32"
+                  width="28"
+                  height="28"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -68,34 +93,34 @@ export default function CartFlyout() {
                 scrollbarWidth: "none",
                 scrollbarColor: "#212121 white",
               }}
-              className="px-5 overflow-y-auto"
+              className="px-5 overflow-y-auto "
             >
-              <ul ref={animationParent} className="w-full flex flex-col gap-5">
+              <ul ref={animationParent} className="w-auto flex flex-col gap-5">
                 {Object.values($cartItems).map((cartItem) => (
                   <li
-                    className="flex justify-around items-center gap-7 p-5 w-full border-2 border-black rounded-md"
+                    className="bg-black/30 backdrop-blur-xl text-white flex flex-col justify-center items-center md:flex-row md:justify-between md:items-center gap-7 p-3 border-2 border-white rounded-md"
                     key={`${cartItem.id}-${cartItem.size}`}
                   >
                     <img
-                      className="w-56"
+                      className="w-48"
                       src={cartItem.imageSrc}
                       alt={cartItem.name}
                     />
                     <div className="flex flex-col gap-2 justify-center">
-                      <h3>{cartItem.name}</h3>
-                      <div className="flex justify-evenly items-center gap-2 border-2 py-1 border-black rounded-lg w-32">
+                      <h3 className="text-base">{cartItem.name}</h3>
+                      <div className="flex justify-evenly items-center gap-2 border-2 py-1 border-white rounded-lg w-32">
                         <button
                           onClick={() =>
                             subtractItemQuantity(cartItem.id, cartItem.size)
                           }
-                          className="text-3xl"
+                          className="text-2xl"
                         >
                           <svg
                             data-testid="geist-icon"
-                            height="16"
+                            height="14"
                             strokeLinejoin="round"
                             viewBox="0 0 16 16"
-                            width="16"
+                            width="14"
                             style={{ color: "currentcolor" }}
                           >
                             <path
@@ -106,7 +131,7 @@ export default function CartFlyout() {
                             ></path>
                           </svg>
                         </button>
-                        <p>{cartItem.quantity}</p>
+                        <p className="text-sm">{cartItem.quantity}</p>
                         <button
                           onClick={() =>
                             addItemQuantity(cartItem.id, cartItem.size)
@@ -115,10 +140,10 @@ export default function CartFlyout() {
                         >
                           <svg
                             data-testid="geist-icon"
-                            height="16"
+                            height="14"
                             strokeLinejoin="round"
                             viewBox="0 0 16 16"
-                            width="16"
+                            width="14"
                             style={{ color: "currentcolor" }}
                           >
                             <path
@@ -131,29 +156,14 @@ export default function CartFlyout() {
                         </button>
                       </div>
                       <p>Talla: {cartItem.size}</p>
-                      <p>Precio: {cartItem.price * cartItem.quantity}.00 €</p>
+                      <p>Precio: {cartItem.price} €</p>
                       <button
-                        className="flex items-center gap-2 "
+                        className="flex items-center gap-2 text-red-500"
                         onClick={() =>
                           removeCartItem(cartItem.id, cartItem.size)
                         }
                       >
                         Eliminar
-                        <svg
-                          data-testid="geist-icon"
-                          height="16"
-                          strokeLinejoin="round"
-                          viewBox="0 0 16 16"
-                          width="16"
-                          style={{ color: "red" }}
-                        >
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M6.75 2.75C6.75 2.05964 7.30964 1.5 8 1.5C8.69036 1.5 9.25 2.05964 9.25 2.75V3H6.75V2.75ZM5.25 3V2.75C5.25 1.23122 6.48122 0 8 0C9.51878 0 10.75 1.23122 10.75 2.75V3H12.9201H14.25H15V4.5H14.25H13.8846L13.1776 13.6917C13.0774 14.9942 11.9913 16 10.6849 16H5.31508C4.00874 16 2.92263 14.9942 2.82244 13.6917L2.11538 4.5H1.75H1V3H1.75H3.07988H5.25ZM4.31802 13.5767L3.61982 4.5H12.3802L11.682 13.5767C11.6419 14.0977 11.2075 14.5 10.6849 14.5H5.31508C4.79254 14.5 4.3581 14.0977 4.31802 13.5767Z"
-                            fill="red"
-                          ></path>
-                        </svg>
                       </button>
                     </div>
                   </li>
@@ -162,15 +172,27 @@ export default function CartFlyout() {
             </div>
             <footer
               id="headerCart"
-              className="w-full sticky bottom-0 left-0 h-[15vh] bg-transparent flex items-center justify-between px-10"
+              className="bg-[#2d007a]/90 text-white w-full sticky bottom-0 left-0 flex flex-col items-center justify-center px-5 p-5"
             >
-              <h3 className="text-2xl">TOTAL:</h3>
-              <p className="text-xl">{totalPrice()}.00 €</p>
+              <a
+                href="/checkout"
+                className="text-base px-4 py-2 rounded-lg border-2 border-white w-full flex justify-between items-center transition-all duration-300 ease-in-out hover:text-[#2d007a]/90 hover:bg-white/90"
+              >
+                <span className="text-sm lg:text-base xl:text-lg font-cabinetGroteskBold">
+                  CHECKOUT
+                </span>
+                <p className="text-sm lg:text-base xl:text-lg font-cabinetGroteskBold">
+                  <span>TOTAL</span>
+                  <span className="inline-block w-20 text-right">
+                    {totalPrice()}.00 €
+                  </span>
+                </p>
+              </a>
             </footer>
           </>
         ) : (
           <>
-            <p className="text-2xl flex justify-center items-center h-full">
+            <p className="text-2xl flex justify-center items-center h-full text-white">
               ¡Tu carrito está vacío!
             </p>
             <button
@@ -183,7 +205,7 @@ export default function CartFlyout() {
                 height="32"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="currentColor"
+                stroke="white"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
