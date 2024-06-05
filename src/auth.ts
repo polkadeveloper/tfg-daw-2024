@@ -35,6 +35,9 @@ export const lucia = new Lucia(adapter, {
       city: attributes.city,
       province: attributes.province,
       country: attributes.country,
+      role: attributes.role,
+      status: attributes.status,
+      loginAttempts: attributes.loginAttempts,
     };
   },
 });
@@ -58,4 +61,7 @@ interface DatabaseUserAttributes {
   city: string;
   province: string;
   country: string;
+  role: "admin" | "user";
+  status: string;
+  loginAttempts: number;
 }
