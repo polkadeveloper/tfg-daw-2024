@@ -1,20 +1,30 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import AdminPanel from "@/components/React/AdminPanel";
+import { getSession } from "auth-astro/server";
+
+const sessionGoogle = await getSession(Astro.request);
+const user = Astro.locals.user;
+
+// Si el usuario no ha iniciado sesión, o ha iniciado sesión con Google, o tiene el rol "user", redirige a la página de inicio
+if (!user || (sessionGoogle && sessionGoogle.user) || user.role === "user") {
+  return Astro.redirect("/");
+}
+
+if (user.role !== "admin") {
+  return Astro.redirect("/");
+}
 ---
 
-<Layout title="Emblem - No se encuentra la página especificada">
+<Layout title="Emblem - Administración">
   <section
     class="min-h-[70vh] px-5 py-2 flex flex-col gap-5 justify-center items-center font-cabinetGroteskBold"
   >
-    <article class="relative flex flex-col gap-10 justify-center items-center bg-black/40 border-2 border-white p-20 rounded-lg">
-      <h1 class="text-2xl lg:text-4xl">Panel de administración</h1>
-      <h2 class="text-2xl">¿Que deseas realizar?</h2>
-      <article class="flex justify-center items-center text-black gap-10">
-        <button class="bg-green-400 px-2 py-2 rounded-lg">Crear</button>
-        <button class="bg-blue-400 px-2 py-2 rounded-lg">Actualizar</button>
-        <button class="bg-red-400 px-2 py-2 rounded-lg">Eliminar</button>
-      </article>
-      <p class="absolute top-2 right-2 font-bold">admin @ polkadev</p>
-    </article>
+    <AdminPanel
+      id={user.id}
+      status={user.status}
+      loginAttempts={user.loginAttempts}
+      client:load
+    />
   </section>
 </Layout>
