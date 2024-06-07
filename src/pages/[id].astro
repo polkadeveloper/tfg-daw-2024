@@ -14,6 +14,39 @@ const { id } = Astro.params;
 const response = await fetch(`http://localhost:4321/api/${id}`);
 const data = await response.json();
 
+const responseTallas = await fetch("http://localhost:4321/api/sizes");
+const dataTallas = await responseTallas.json();
+
+const tallas = dataTallas.tallas.map((talla) => ({
+  itemId: talla.item_id,
+  sizeId: talla.size_id,
+  stockQuantity: talla.stock_quantity,
+  sizeName: talla.size_name,
+  outOfStock: talla.out_of_stock,
+}));
+
+const realLength = tallas.length / 5;
+console.log(realLength);
+
+const arrayTallasPorItemId2 = [];
+
+for (let i = 0; i <= realLength; i++) {
+  const tallasFiltradas = tallas.filter((talla) => talla.itemId === i);
+  arrayTallasPorItemId2.push({
+    itemId: i,
+    tallas: tallasFiltradas,
+  });
+}
+
+console.log(arrayTallasPorItemId2);
+
+const tallas2 = arrayTallasPorItemId2[id]?.tallas;
+
+const tallas3 = arrayTallasPorItemId[id]?.tallas;
+
+console.log(tallas2);
+console.log("dsad" + tallas3);
+
 // Buscar el atributo con el id proporcionado
 // const attribute = data.attributes.find((attribute) => attribute.item_id === id);
 const attribute = data.attributes.find(
@@ -31,9 +64,10 @@ const {
   item_img_name,
 } = attribute;
 
-const productoAgotado = arrayTallasPorItemId[item_id - 1].tallas.every(
+const productoAgotado = tallas2.every(
   (talla) => talla.outOfStock === 1
 );
+console.log(productoAgotado);
 ---
 
 <!-- Componente principal que utiliza las propiedades del producto -->
@@ -88,9 +122,10 @@ const productoAgotado = arrayTallasPorItemId[item_id - 1].tallas.every(
 
         <!-- Botón "Add to cart" -->
         <AddToCartForm
-          client:only
+          client:load
           user={user}
           sessionGoogle={sessionGoogle}
+          tallas2={tallas2}
           itemInfo={{
             id: item_id,
             collection_id: collection_id,

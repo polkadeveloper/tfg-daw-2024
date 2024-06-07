@@ -18,7 +18,7 @@ console.log(realLength);
 // Creamos un array para almacenar los resultados
 const arrayTallasPorItemId = [];
 
-for (let i = 1; i <= realLength; i++) {
+for (let i = 0; i <= realLength; i++) {
   // Filtramos las tallas para el itemId actual
   const tallasFiltradas = tallas.filter((talla) => talla.itemId === i);
 

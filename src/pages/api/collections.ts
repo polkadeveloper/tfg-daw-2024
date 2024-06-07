@@ -2,28 +2,18 @@
 import type { APIContext } from "astro";
 // Importamos el cliente de MySQL para realizar la conexión a la base de datos y las consultas
 import mysql from "mysql2/promise";
-
-// Creamos la conexión a la base de datos
-export const connection = await mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  database: "tfg-daw-2024",
-});
+// Importamos la conexión a la base de datos que hemos creado en el archivo items.ts
+import { connection as db } from "@/pages/api/items";
 
 // Creamos la función GET que se encargará de obtener los datos de la base de datos y devolverlos
 export async function GET(context: APIContext) {
-  let imagenes: string[] = [];
   try {
-    const [rows, fields] = await connection.execute(
-      `SELECT * FROM items`,
+    const [rows] = await db.execute(
+      `SELECT * FROM collections`,
     );
-    // Comprobamos si 'rows' es un array antes de intentar llamar a 'map' en él
-    if (Array.isArray(rows)) {
-      // Añadimos todas las imágenes al array 'imagenes'
-      rows.map((row: any) => imagenes.push(row.item_img_name));
-    }
+
     return new Response(
-      JSON.stringify({ camisetas: rows, imagenes }),
+      JSON.stringify({ collections: rows }),
       {
         status: 200,
         headers: {

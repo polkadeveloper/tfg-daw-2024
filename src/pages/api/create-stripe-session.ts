@@ -1,6 +1,5 @@
 import { type APIContext } from "astro";
 import Stripe from "stripe";
-const STRIPE_PUBLIC_API_KEY = import.meta.env.STRIPE_PUBLIC_API_KEY;
 const stripe = new Stripe(import.meta.env.STRIPE_PRIVATE_API_KEY);
 
 export async function POST(context: APIContext) {

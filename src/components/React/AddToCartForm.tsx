@@ -6,6 +6,7 @@ export default function AddToCartForm({
   children,
   user,
   sessionGoogle,
+  tallas2,
   itemInfo,
 }) {
   const [selectedSize, setSelectedSize] = useState("");
@@ -46,9 +47,7 @@ export default function AddToCartForm({
   }
 
   const tallas = arrayTallasPorItemId[itemInfo.id - 1]?.tallas;
-  const productoAgotado = arrayTallasPorItemId[itemInfo.id - 1].tallas.every(
-    (talla) => talla.outOfStock === 1
-  );
+  const productoAgotado = tallas2.every((talla) => talla.outOfStock === 1);
 
   return (
     <>
@@ -64,13 +63,13 @@ export default function AddToCartForm({
           <option value="" disabled>
             Selecciona una talla
           </option>
-          {tallas.map((talla, index) => (
+          {tallas2.map((talla, index) => (
             <option
               key={index}
               value={talla.sizeName}
-              disabled={talla.stockQuantity <= 5}
+              disabled={talla.stockQuantity <= 0}
             >
-              {talla.sizeName} {talla.stockQuantity <= 5 ? "(Agotado)" : ""}
+              {talla.sizeName} {talla.stockQuantity <= 0 ? "(Agotado)" : ""}
             </option>
           ))}
         </select>
