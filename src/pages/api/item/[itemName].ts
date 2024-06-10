@@ -4,15 +4,17 @@ import { type APIRoute } from "astro";
 import { connection as db } from "@/pages/api/items";
 
 // Creamos la función GET que se encargará de obtener los datos de la base de datos y devolverlos
-export const GET: APIRoute = async ({ params, request }) => {
+export const GET: APIRoute = async ({ params }) => {
   try {
-    const id = params.id;
+    const itemName = decodeURIComponent(params.itemName);
 
-    const [rows] = await db.execute(
+    console.log(itemName);
+
+    const [rows] = await db.query(
       `SELECT * 
-      FROM users  
-      WHERE id = ?;`,
-      [id],
+      FROM items WHERE
+      item_name = ?;`,
+      [itemName],
     );
 
     return new Response(

@@ -1,5 +1,18 @@
 ---
 import { CheckoutStripe } from "@/components/React/StripeSession";
+import { getSession } from "auth-astro/server";
+
+const sessionGoogle = await getSession(Astro.request);
+const user = Astro.locals.user;
+let userId = null;
+if (user) {
+  userId = user.id;
+} else if (sessionGoogle) {
+  userId = sessionGoogle.user.id;
+} else {
+  userId = null;
+  return Astro.redirect("/login");
+}
 ---
 
 <!doctype html>
@@ -12,6 +25,6 @@ import { CheckoutStripe } from "@/components/React/StripeSession";
     <title>Emblem - Checkout</title>
   </head>
   <body>
-    <CheckoutStripe client:load />
+    <CheckoutStripe userId={userId} client:load />
   </body>
 </html>

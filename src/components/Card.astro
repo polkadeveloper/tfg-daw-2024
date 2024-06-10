@@ -1,5 +1,6 @@
 ---
 const { nombre, precio, img, link } = Astro.props;
+console.log(img);
 ---
 
 <section
@@ -10,11 +11,11 @@ const { nombre, precio, img, link } = Astro.props;
   >
     <img
       decoding="async"
-      src={img}
+      src=`https://res.cloudinary.com/dle7lr00f/image/upload/${img}-back.png`
       alt=`Imagen de la prenda ${nombre}`
-      transition:name={`${img}`}
+      transition:name=`https://res.cloudinary.com/dle7lr00f/image/upload/${img}-back`
       class="w-72 h-auto md:w-80 lg:w-64 xl:w-72 select-none"
-      style="aspect-ratio: 503/357;"
+      
     />
     <p class="text-center text-base lg:text-lg" transition:name={`${nombre}`}>
       {nombre}
@@ -26,8 +27,14 @@ const { nombre, precio, img, link } = Astro.props;
       {precio}€
     </p>
     <a
-      class="rounded-lg bg-indigo-600 hover:bg-indigo-800 text-white px-2 py-1 cursor-pointer select-none"
-      href={link}><strong>Ver disponibilidad</strong></a
+      class="rounded-lg bg-indigo-600 hover:bg-indigo-700 border-2 hover:border-white text-white px-2 py-1 cursor-pointer select-none transition-all duration-300 ease-in-out"
+      href=`/${link}`><strong>Ver disponibilidad</strong></a
     >
   </article>
 </section>
+
+<style>
+  img {
+    filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.6));
+  }
+</style>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 
 const STRIPE_PUBLIC_API_KEY = import.meta.env.VITE_STRIPE_PUBLIC_API_KEY;
@@ -19,7 +19,10 @@ export function CheckoutStripe(props: any) {
 
   useEffect(() => {
     const fetchSession = async () => {
-      const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+      const cartItems = JSON.parse(
+        localStorage.getItem(`cartItems-${props.userId}`) || "{}"
+      );
+      console.log(cartItems);
       const response = await fetch("/api/create-stripe-session", {
         method: "POST",
         headers: {

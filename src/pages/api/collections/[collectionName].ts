@@ -4,19 +4,19 @@ import { type APIRoute } from "astro";
 import { connection as db } from "@/pages/api/items";
 
 // Creamos la función GET que se encargará de obtener los datos de la base de datos y devolverlos
-export const GET: APIRoute = async ({ params, request }) => {
+export const GET: APIRoute = async ({ params }) => {
   try {
-    const id = params.id;
+    const collectionName = params.collectionName;
+
+    console.log(collectionName);
 
     const [rows] = await db.execute(
-      `SELECT * 
-      FROM users  
-      WHERE id = ?;`,
-      [id],
+      `SELECT * FROM items INNER JOIN collections on items.collection_id = collections.collection_id WHERE collections.collection_name = ?;`,
+      [collectionName],
     );
 
     return new Response(
-      JSON.stringify({ rows }),
+      JSON.stringify({ items: rows }),
       {
         status: 200,
         headers: {
@@ -25,6 +25,7 @@ export const GET: APIRoute = async ({ params, request }) => {
       },
     );
   } catch (error) {
+    console.error(error);
     return new Response(
       JSON.stringify({ message: "Error al obtener los datos" }),
       {

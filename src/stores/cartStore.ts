@@ -1,5 +1,5 @@
 import { atom, map } from "nanostores";
-import { arrayTallasPorItemId } from "@/services/sizesInfo";
+import { getSizesInfo } from "@/services/sizesInfo";
 
 export const isCartOpen = atom(false);
 
@@ -14,7 +14,8 @@ export type CartItem = {
 
 export const cartItems = map<Record<string, CartItem>>({});
 
-export function addCartItem({ id, name, imageSrc, size, price }) {
+export async function addCartItem({ id, name, imageSrc, size, price }) {
+  const arrayTallasPorItemId = await getSizesInfo();
   const itemSizeStockQuantity =
     arrayTallasPorItemId[Number(id) - 1].tallas.find(
       (talla) => talla.sizeName === size,
@@ -57,7 +58,8 @@ export function removeCartItem(id: string, size: string) {
   }
 }
 
-export function addItemQuantity(id: string, size: string) {
+export async function addItemQuantity(id: string, size: string) {
+  const arrayTallasPorItemId = await getSizesInfo();
   const itemSizeStockQuantity =
     arrayTallasPorItemId[Number(id) - 1].tallas.find(
       (talla) => talla.sizeName === size,
@@ -76,7 +78,8 @@ export function addItemQuantity(id: string, size: string) {
   }
 }
 
-export function subtractItemQuantity(id: string, size: string) {
+export async function subtractItemQuantity(id: string, size: string) {
+  const arrayTallasPorItemId = await getSizesInfo();
   const key = `${id}-${size}`; // usa una combinación de id y size como clave
   const existingEntry = cartItems.get()[key];
   if (existingEntry) {

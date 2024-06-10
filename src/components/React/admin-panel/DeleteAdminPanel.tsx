@@ -76,6 +76,7 @@ function DeleteItemsDeletePanel(props: any) {
       .then((response) => response.json())
       .then((data) => {
         setItems(data.camisetas);
+        setSelectedItem(data.camisetas[0].item_name);
       })
       .catch((error) => {
         console.error("Error fetching items", error);
@@ -148,6 +149,7 @@ function DeleteCollectionsDeletePanel(props: any) {
       .then((response) => response.json())
       .then((data) => {
         setItems(data.collections);
+        setSelectedItem(data.collections[0].collection_name);
       })
       .catch((error) => {
         console.error("Error fetching items", error);

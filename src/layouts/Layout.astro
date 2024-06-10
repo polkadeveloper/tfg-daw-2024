@@ -36,7 +36,8 @@ const { title } = Astro.props;
   >
     <Header />
 
-    {(user || sessionGoogle) && <CartFlyout client:load />}
+    {user && <CartFlyout userId={user.id} client:load />}
+    {sessionGoogle && <CartFlyout userId={sessionGoogle.user.id} client:load />}
 
     <slot />
     <Footer />

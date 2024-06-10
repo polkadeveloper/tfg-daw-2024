@@ -10,7 +10,7 @@ import {
 } from "@/stores/cartStore";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 
-export default function CartFlyout() {
+export default function CartFlyout(props: any) {
   const $isCartOpen = useStore(isCartOpen);
   const $cartItems = useStore(cartItems);
 
@@ -35,7 +35,7 @@ export default function CartFlyout() {
   // Carga los datos del carrito del almacenamiento local al montar el componente
   useEffect(() => {
     const initialCartItems = JSON.parse(
-      localStorage.getItem("cartItems") || "{}"
+      localStorage.getItem(`cartItems-${props.userId}`) || "{}"
     );
 
     for (const key in initialCartItems) {
@@ -45,7 +45,7 @@ export default function CartFlyout() {
 
   // Guarda los datos del carrito en el almacenamiento local cuando se actualizan
   useEffect(() => {
-    localStorage.setItem("cartItems", JSON.stringify($cartItems));
+    localStorage.setItem(`cartItems-${props.userId}`, JSON.stringify($cartItems));
   }, [$cartItems]);
 
   return (

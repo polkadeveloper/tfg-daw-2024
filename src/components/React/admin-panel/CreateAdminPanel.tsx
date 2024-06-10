@@ -242,6 +242,32 @@ function CreateUsersCreatePanel(props: any) {
 }
 
 function CreateCollectionsCreatePanel(props: any) {
+  const [collectionName, setCollectionName] = useState("");
+
+  const handleCreate = () => {
+    fetch("/api/create-collection", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        collectionName,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message === "Colección creada correctamente") {
+          toast.success(data.message);
+          // Limpiamos los campos
+          setCollectionName("");
+        } else {
+          toast.error(data.message);
+        }
+      })
+      .catch((error) => {
+        toast.error("Error al crear la colección");
+      });
+  };
   return (
     <>
       <button
@@ -250,7 +276,25 @@ function CreateCollectionsCreatePanel(props: any) {
       >
         Volver atrás
       </button>
-      <p>Create Collections Create Panel</p>
+      <h1 className="text-3xl text-center font-cabinetGroteskBold">
+        Crear colecciones
+      </h1>
+      <article className="w-[425px] h-32 cursor-pointer flex justify-center items-center gap-5 bg-black/30 border-2 border-white rounded-lg overflow-hidden">
+        <h2>Nombre de la colección</h2>
+        <input
+          value={collectionName}
+          onChange={(e) => setCollectionName(e.target.value)}
+          className="px-4 py-2 bg-white rounded-lg border-2 border-black text-black w-32"
+          type="text"
+        ></input>
+        <button
+          className="bg-green-500 border-2 border-white px-4 py-2 rounded-lg hover:bg-green-600 transition-all duration-300 ease-in-out"
+          onClick={handleCreate}
+        >
+          Crear
+        </button>
+      </article>
+      <Toaster position="top-right" expand={true} richColors theme="dark" />
     </>
   );
 }

@@ -1,6 +1,5 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import { arrayTallasPorItemId } from "@/services/sizesInfo";
 import AddToCartForm from "@/components/React/AddToCartForm";
 import { getSession } from "auth-astro/server";
 // Usuario autenticado con cuenta de Google
@@ -25,27 +24,29 @@ const tallas = dataTallas.tallas.map((talla) => ({
   outOfStock: talla.out_of_stock,
 }));
 
-const realLength = tallas.length / 5;
-console.log(realLength);
+// Crear un conjunto de todos los itemId únicos
+const uniqueItemIds = new Set(tallas.map((talla) => talla.itemId));
 
 const arrayTallasPorItemId2 = [];
 
-for (let i = 0; i <= realLength; i++) {
-  const tallasFiltradas = tallas.filter((talla) => talla.itemId === i);
+// Iterar sobre cada itemId único
+for (let itemId of uniqueItemIds) {
+  const tallasFiltradas = tallas.filter((talla) => talla.itemId === itemId);
   arrayTallasPorItemId2.push({
-    itemId: i,
+    itemId: itemId,
     tallas: tallasFiltradas,
   });
 }
 
-console.log(arrayTallasPorItemId2);
+// Asegúrate de que el id se convierte a un número antes de usarlo para indexar en arrayTallasPorItemId2
+const idNumber = Number(id);
+const tallas2 = arrayTallasPorItemId2.find(
+  (item) => item.itemId === idNumber
+)?.tallas;
 
-const tallas2 = arrayTallasPorItemId2[id]?.tallas;
-
-const tallas3 = arrayTallasPorItemId[id]?.tallas;
+const stock = tallas2.map((talla) => talla.stockQuantity);
 
 console.log(tallas2);
-console.log("dsad" + tallas3);
 
 // Buscar el atributo con el id proporcionado
 // const attribute = data.attributes.find((attribute) => attribute.item_id === id);
@@ -64,9 +65,7 @@ const {
   item_img_name,
 } = attribute;
 
-const productoAgotado = tallas2.every(
-  (talla) => talla.outOfStock === 1
-);
+const productoAgotado = tallas2.every((talla) => talla.outOfStock === 1);
 console.log(productoAgotado);
 ---
 
@@ -87,19 +86,20 @@ console.log(productoAgotado);
         <!-- Imagen trasera de la camiseta -->
         <img
           decoding="async"
-          src=`https://res.cloudinary.com/dle7lr00f/image/upload/v1709637639/${item_img_name}-back.webp`
+          src=`https://res.cloudinary.com/dle7lr00f/image/upload/${item_img_name}-back.png`
           alt=`Imagen trasera de la prenda: ${item_name}`
-          class="w-full h-auto transition-transform duration-300 transform aspect-[499/355]"
+          class="w-full h-full transition-transform duration-300 transform"
           id="backImage"
-          transition:name={`https://res.cloudinary.com/dle7lr00f/image/upload/v1709637639/${item_img_name}-back`}
+          transition:name={`https://res.cloudinary.com/dle7lr00f/image/upload/${item_img_name}-back`}
+          style="aspect-ratio: 146/153;"
         />
 
         <!-- Imagen frontal de la camiseta -->
         <img
           decoding="async"
-          src=`https://res.cloudinary.com/dle7lr00f/image/upload/v1709637639/${item_img_name}-front.webp`
+          src=`https://res.cloudinary.com/dle7lr00f/image/upload/${item_img_name}-front.png`
           alt=`Imagen frontal de la prenda: ${item_name}`
-          class="w-full h-auto transition-transform duration-300 transform absolute top-0 left-0 opacity-0"
+          class="w-full h-full transition-transform duration-300 transform absolute top-0 left-0 opacity-0"
           id="frontImage"
         />
       </div>
@@ -134,7 +134,7 @@ console.log(productoAgotado);
             price: item_price,
             discounted: item_discounted,
             size: 1,
-            imageSrc: `https://res.cloudinary.com/dle7lr00f/image/upload/v1709637639/${item_img_name}-back`,
+            imageSrc: `https://res.cloudinary.com/dle7lr00f/image/upload/${item_img_name}-back`,
           }}
         >
           <button
@@ -165,6 +165,10 @@ console.log(productoAgotado);
 
 <!-- Estilos CSS para la sección de cambio de imagen al hacer hover -->
 <style>
+  img {
+    filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.6));
+  }
+
   #camisetaContainer:hover #backImage {
     opacity: 0; /* Oculta la imagen frontal al hacer hover */
   }

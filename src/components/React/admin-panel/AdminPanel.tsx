@@ -4,7 +4,7 @@ import { Toaster, toast } from "sonner";
 import "@/styles/sonner.css";
 import DeleteAdminPanel from "@/components/React/admin-panel/DeleteAdminPanel";
 import CreateAdminPanel from "@/components/React/admin-panel/CreateAdminPanel";
-// import UpdateAdminPanel from "@/components/React/admin-panel/UpdateAdminPanel";
+import UpdateAdminPanel from "@/components/React/admin-panel/UpdateAdminPanel";
 
 function AdminPanel(props: any) {
   const [password, setPassword] = useState<string | null>(null);
@@ -182,20 +182,6 @@ function AdminPanel(props: any) {
         <p className="absolute top-2 right-2 font-bold">admin @ polkadev</p>
       </article>
       <Toaster position="top-right" expand={true} richColors theme="dark" />
-    </>
-  );
-}
-
-function UpdateAdminPanel(props: any) {
-  return (
-    <>
-      <button
-        className="absolute top-5 left-5"
-        onClick={() => props.setCurrentPanel(null)}
-      >
-        Volver atrás
-      </button>
-      <p>Update Admin Panel</p>
     </>
   );
 }

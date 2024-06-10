@@ -1,0 +1,25 @@
+---
+const { nombre } = Astro.props;
+---
+
+<a href=`/collections/${nombre}`>
+  <section
+    class="z-0 relative w-full h-80 border-2 border-white backdrop-blur-3xl bg-indigo-500/30 rounded-xl lg:w-auto cursor-pointer"
+    style=`background-image: url(https://res.cloudinary.com/dle7lr00f/image/upload/${nombre}); background-position: center; background-repeat: no-repeat; background-size: cover;`
+  >
+    <div
+      class="absolute bottom-0 top-0 z-10 h-full w-full bg-gradient-to-b from-transparent rounded-xl from-40% via-black/60 to-black/90 duration-300 transition-all ease-in-out"
+    >
+    </div>
+    <article
+      class="absolute bottom-5 left-0 right-0 text-center z-20 font-cabinetGroteskBold"
+    >
+      <p
+        class="z-20 uppercase text-center text-2xl font-cabinetGroteskBlack tracking-wider"
+        transition:name={`${nombre}`}
+      >
+        {nombre}
+      </p>
+    </article>
+  </section>
+</a>

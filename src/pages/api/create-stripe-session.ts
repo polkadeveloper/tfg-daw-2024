@@ -5,9 +5,7 @@ const stripe = new Stripe(import.meta.env.STRIPE_PRIVATE_API_KEY);
 export async function POST(context: APIContext) {
   // Parsea el cuerpo de la solicitud a JSON
   const body = await context.request.text();
-  const { cartItems, origin } = JSON.parse(body);
-
-  console.log(cartItems);
+  const { cartItems } = JSON.parse(body);
 
   // Transforma los cartItems para que se ajusten al formato de Stripe
   const line_items = Object.values(cartItems).map((item: any) => ({

@@ -2,12 +2,17 @@
 import Layout from "@/layouts/Layout.astro";
 import Card from "@/components/Card.astro";
 
-const response = await fetch("http://localhost:4321/api/items");
+// Desestructuración de propiedades proporcionadas por Astro
+const { collectionName } = Astro.params;
+
+const response = await fetch(
+  `http://localhost:4321/api/collections/${collectionName}`
+);
 const data = await response.json();
 ---
 
 <!-- Componente principal que representa la página de camisetas -->
-<Layout title="Emblem - Camisetas">
+<Layout title=`Emblem - Colección ${collectionName}`>
   <!-- Sección principal de la página -->
   <section
     class="relative min-h-screen pt-8 pb-8 md:pt-0 md:pb-0 md:pr-16 md:pl-16 interFont text-base lg:text-lg text-white"
@@ -16,7 +21,7 @@ const data = await response.json();
     <h1
       class="text-5xl text-left md:text-center p-4 font-cabinetGroteskBold pt-10"
     >
-      Nuestras prendas
+      Colección {collectionName}
     </h1>
 
     <!-- Contenedor para las tarjetas de las prendas -->
@@ -24,12 +29,12 @@ const data = await response.json();
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-content-center pt-10 md:pb-20 gap-10 md:gap-5 pb-5 mr-4 ml-4"
     >
       {
-        data.camisetas.map((camiseta) => (
+        data.items.map((item) => (
           <Card
-            nombre={camiseta.item_name}
-            precio={camiseta.item_price}
-            img={camiseta.item_img_name}
-            link={camiseta.item_id}
+            nombre={item.item_name}
+            precio={item.item_price}
+            img={item.item_img_name}
+            link={item.item_id}
           />
         ))
       }

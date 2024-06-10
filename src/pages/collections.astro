@@ -1,0 +1,31 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import CardCollection from "@/components/CardCollection.astro";
+const response = await fetch("http://localhost:4321/api/collections");
+const data = await response.json();
+---
+
+<Layout title="Emblem - Colecciones">
+  <section
+    class="relative min-h-screen pt-8 pb-8 md:pt-0 md:pb-0 md:pr-16 md:pl-16 interFont text-base lg:text-lg text-white"
+  >
+    <!-- Título de la sección -->
+    <h1
+      class="text-5xl text-left md:text-center p-4 font-cabinetGroteskBold pt-10"
+    >
+      Nuestras colecciones
+    </h1>
+
+    <article
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-content-center justify-center items-center pt-10 md:pb-20 gap-10 md:gap-5 pb-5 mr-4 ml-4"
+    >
+    {
+    data.collections.map((collection) => (
+      <CardCollection
+        nombre={collection.collection_name}
+      />
+      ))
+    }
+    </article>
+  </section></Layout
+>

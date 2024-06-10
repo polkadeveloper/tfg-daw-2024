@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { addCartItem, isCartOpen } from "@/stores/cartStore";
-import { arrayTallasPorItemId } from "@/services/sizesInfo";
 
 export default function AddToCartForm({
   children,
@@ -46,7 +45,6 @@ export default function AddToCartForm({
     addCartItem({ ...itemInfo, size: selectedSize });
   }
 
-  const tallas = arrayTallasPorItemId[itemInfo.id - 1]?.tallas;
   const productoAgotado = tallas2.every((talla) => talla.outOfStock === 1);
 
   return (
