@@ -69,7 +69,7 @@ export function LoginForm(props: any) {
   return (
     <>
       <h2 className="font-bold text-2xl text-neutral-200">
-        Bienvenido a Emblem
+        Bienvenido a Future
       </h2>
       <p className="text-base max-w-sm mt-2 text-neutral-300">
         Inicia sesión para continuar

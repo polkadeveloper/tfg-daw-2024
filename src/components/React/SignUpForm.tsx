@@ -78,10 +78,10 @@ export function SignupForm(props: any) {
   return (
     <div className="max-w-2xl xl:max-w-3xl w-full mx-auto rounded-2xl p-4 md:p-8 shadow-input bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))] from-indigo-500 via-black to-black border-2 border-indigo-500/40">
       <h2 className="font-bold text-2xl text-neutral-200">
-        Bienvenido a Emblem
+        Bienvenido a Future
       </h2>
       <p className="text-base max-w-sm mt-2 text-neutral-300">
-        Crea tu cuenta en Emblem a traves de este formulario
+        Crea tu cuenta en Future a traves de este formulario
       </p>
 
       <form className="my-8" onSubmit={handleSubmit}>

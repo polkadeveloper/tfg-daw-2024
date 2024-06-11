@@ -1,4 +1,5 @@
 ---
+import Layout from "@/layouts/Layout.astro";
 import Stripe from "stripe";
 const stripe = new Stripe(import.meta.env.STRIPE_PRIVATE_API_KEY);
 const sessionID = Astro.url.searchParams.get("session_id");
@@ -15,15 +16,22 @@ const { name, email, address, phone, tax_exempt, tax_ids } =
   session.customer_details;
 ---
 
-<div>
-  <h1>Thank you for your purchase, {name}!</h1>
-  <p>We've sent a receipt to {email}.</p>
-  <p>Your order will be shipped to:</p>
-  <p>{address.line1}</p>
-  <p>{address.line2}</p>
-  <p>{address.city}, {address.state} {address.postal_code}</p>
-  <p>{address.country}</p>
-  <p>{phone}</p>
-  <p>{tax_exempt ? "You are tax exempt." : "You are not tax exempt."}</p>
-  <p>{tax_ids.map((tax_id) => tax_id.type + ": " + tax_id.value)}</p>
-</div>
+<Layout title="Emblem - Inicio de sesión">
+  <section
+    class="min-h-[70vh] px-5 py-2 flex flex-col gap-5 justify-center items-center font-cabinetGroteskBold"
+  >
+    <div>
+      <h1 class="text-2xl">Gracias por tu compra en Future, {name}!</h1>
+      <p class="text-lg">Te hemos enviado tu recibo a {email}.</p>
+      <p class="text-lg">El envío te llegará a:</p>
+      <p class="text-base">{address.line1}</p>
+      <p class="text-base">{address.line2}</p>
+      <p class="text-base">
+        {address.city}, {address.state}
+        {address.postal_code}
+      </p>
+      <p class="text-base">{address.country}</p>
+      <p class="text-base">{phone}</p>
+    </div>
+  </section>
+</Layout>

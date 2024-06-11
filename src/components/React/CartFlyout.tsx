@@ -54,7 +54,7 @@ export default function CartFlyout(props: any) {
         <div className="fixed inset-0 bg-black opacity-50 backdrop-blur-sm z-10"></div>
       )}
       <aside
-        className={`bg-[#2d007a]/80 fixed flex flex-col justify-between transition-all duration-500 ease-in-out gap-5 font-cabinetGroteskBold w-full md:w-[55%] xl:w-[35%] h-full backdrop-blur-xl text-black top-0 right-0 z-10 ${
+        className={`bg-[#2d007a]/80 fixed flex flex-col justify-between transition-all duration-500 ease-in-out gap-5 font-cabinetGroteskBold w-full md:w-[65%] lg:w-[55%] xl:w-[35%] h-full backdrop-blur-xl text-black top-0 right-0 z-10 ${
           $isCartOpen
             ? "translate-x-0 opacity-100"
             : "translate-x-full opacity-0"
@@ -95,14 +95,15 @@ export default function CartFlyout(props: any) {
               }}
               className="px-5 overflow-y-auto "
             >
-              <ul ref={animationParent} className="w-auto flex flex-col gap-5">
+              <ul ref={animationParent} className="flex flex-col justify-center items-center gap-5">
                 {Object.values($cartItems).map((cartItem) => (
                   <li
-                    className="bg-black/30 backdrop-blur-xl text-white flex flex-col justify-center items-center md:flex-row md:justify-between md:items-center gap-7 p-3 border-2 border-white rounded-md"
+                    className="bg-black/30 backdrop-blur-xl text-white flex flex-col justify-center items-center md:flex-row md:justify-center md:items-center gap-7 p-3 w-[90%] border-2 border-white rounded-md"
                     key={`${cartItem.id}-${cartItem.size}`}
                   >
                     <img
-                      className="w-48"
+                      className="w-52"
+                      style={{ aspectRatio: "243/179"}}
                       src={cartItem.imageSrc}
                       alt={cartItem.name}
                     />
