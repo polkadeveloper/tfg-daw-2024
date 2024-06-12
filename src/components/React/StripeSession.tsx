@@ -22,7 +22,6 @@ export function CheckoutStripe(props: any) {
       const cartItems = JSON.parse(
         localStorage.getItem(`cartItems-${props.userId}`) || "{}"
       );
-      console.log(cartItems);
       const response = await fetch("/api/create-stripe-session", {
         method: "POST",
         headers: {

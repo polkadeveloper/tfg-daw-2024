@@ -46,6 +46,7 @@ export default function AddToCartForm({
   }
 
   const productoAgotado = tallas2.every((talla) => talla.outOfStock === 1);
+  console.log(tallas2);
 
   return (
     <>

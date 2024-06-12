@@ -6,6 +6,7 @@ export async function POST(context: APIContext) {
   // Parsea el cuerpo de la solicitud a JSON
   const body = await context.request.text();
   const { cartItems } = JSON.parse(body);
+  console.log(cartItems);
 
   // Transforma los cartItems para que se ajusten al formato de Stripe
   const line_items = Object.values(cartItems).map((item: any) => ({

@@ -16,16 +16,26 @@ const data = await response.json();
 const responseTallas = await fetch("http://localhost:4321/api/sizes");
 const dataTallas = await responseTallas.json();
 
-const tallas = dataTallas.tallas.map((talla) => ({
-  itemId: talla.item_id,
-  sizeId: talla.size_id,
-  stockQuantity: talla.stock_quantity,
-  sizeName: talla.size_name,
-  outOfStock: talla.out_of_stock,
-}));
+let tallas = [];
+if (dataTallas && dataTallas.tallas) {
+  tallas = dataTallas.tallas.map((talla) => {
+    console.log(talla); // Agregar console.log aquí
+    return {
+      itemId: talla.item_id,
+      sizeId: talla.size_id,
+      stockQuantity: talla.stock_quantity,
+      sizeName: talla.size_name,
+      outOfStock: talla.out_of_stock,
+    };
+  });
+}
 
 // Crear un conjunto de todos los itemId únicos
-const uniqueItemIds = new Set(tallas.map((talla) => talla.itemId));
+const uniqueItemIds = new Set(
+  tallas.map((talla) => {
+    return talla.itemId;
+  })
+);
 
 const arrayTallasPorItemId2 = [];
 
@@ -44,9 +54,12 @@ const tallas2 = arrayTallasPorItemId2.find(
   (item) => item.itemId === idNumber
 )?.tallas;
 
-const stock = tallas2.map((talla) => talla.stockQuantity);
-
-console.log(tallas2);
+let stock = [];
+if (tallas2) {
+  stock = tallas2.map((talla) => { 
+    return talla.stockQuantity;
+  });
+}
 
 // Buscar el atributo con el id proporcionado
 // const attribute = data.attributes.find((attribute) => attribute.item_id === id);
@@ -66,7 +79,6 @@ const {
 } = attribute;
 
 const productoAgotado = tallas2.every((talla) => talla.outOfStock === 1);
-console.log(productoAgotado);
 ---
 
 <!-- Componente principal que utiliza las propiedades del producto -->
