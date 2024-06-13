@@ -17,14 +17,12 @@ if (user.role !== "admin") {
 ---
 
 <Layout title="Emblem - Administración">
-  <section
-    class="min-h-[70vh] px-5 py-2 flex flex-col gap-5 justify-center items-center font-cabinetGroteskBold"
-  >
+
     <AdminPanel
       id={user.id}
       status={user.status}
       loginAttempts={user.loginAttempts}
       client:load
     />
-  </section>
+
 </Layout>

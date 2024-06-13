@@ -15,6 +15,7 @@ function UpdateAdminPanel(props: any) {
   }
   return (
     <>
+    <section className="min-h-[70vh] relative px-5 py-2 w-full flex flex-col gap-5 justify-center items-center font-cabinetGroteskBold">
       <button
         className="absolute top-5 left-5"
         onClick={() => props.setCurrentPanel(null)}
@@ -35,6 +36,7 @@ function UpdateAdminPanel(props: any) {
             Actualizar prendas
           </p>
         </section>
+      </section>
       </section>
     </>
   );
@@ -94,17 +96,6 @@ function UpdateItemsUpdatePanel(props: any) {
       .then((response) => response.json())
       .then((data) => {
         toast.success(data.message);
-        // Limpiamos los campos
-        setItemName("");
-        setImageName("");
-        setDescription("");
-        setStockXS("");
-        setStockS("");
-        setStockM("");
-        setStockL("");
-        setStockXL("");
-        setPrice("");
-        setCollection("");
       })
       .catch((error) => {
         toast.error("Error al actualizar la prenda");
@@ -157,137 +148,142 @@ function UpdateItemsUpdatePanel(props: any) {
 
   return (
     <>
-      <button
-        className="absolute top-5 left-5"
-        onClick={() => props.setShowUpdateItemComponent(false)}
-      >
-        Volver atrás
-      </button>
-      <h1 className="text-3xl text-center font-cabinetGroteskBold">
-        Actualizar prendas
-      </h1>
-      <div className="grid grid-cols-3 justify-center items-center gap-5">
-        <article className="col-span-1 w-[425px] h-32 cursor-pointer flex justify-center items-center gap-5 bg-black/30 border-2 border-white rounded-lg overflow-hidden">
-          <h2>Nombre de la prenda</h2>
-          <select
-            className="px-4 py-2 border-2 border-white rounded-lg"
-            value={selectedItem}
-            onChange={handleSelectItem}
-            style={{ width: "200px", textOverflow: "ellipsis" }}
-          >
-            {items.map((item) => (
-              <option
-                key={item.item_id}
-                value={item.item_name}
-                style={{
-                  textOverflow: "ellipsis",
-                  overflow: "hidden",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {item.item_name}
+      <section className="min-h-[70vh] relative px-5 py-2 w-full flex flex-col gap-5 justify-center items-center font-cabinetGroteskBold">
+        <button
+          className="absolute top-5 left-5"
+          onClick={() => props.setShowUpdateItemComponent(false)}
+        >
+          Volver atrás
+        </button>
+        <h1 className="text-3xl text-center font-cabinetGroteskBold">
+          Actualizar prendas
+        </h1>
+        <div className="grid grid-cols-3 justify-center items-center gap-5">
+          <article className="col-span-1 w-[425px] h-32 cursor-pointer flex justify-center items-center gap-5 bg-black/30 border-2 border-white rounded-lg overflow-hidden">
+            <h2>Nombre de la prenda</h2>
+            <select
+              className="px-4 py-2 border-2 border-white rounded-lg"
+              value={selectedItem}
+              onChange={handleSelectItem}
+              style={{ width: "200px", textOverflow: "ellipsis" }}
+            >
+              <option value="" disabled>
+                Selecciona una prenda
               </option>
-            ))}
-          </select>
-        </article>
-        <article className="col-span-1 w-[425px] h-32 cursor-pointer flex justify-center items-center gap-5 bg-black/30 border-2 border-white rounded-lg overflow-hidden">
-          <h2>Nombre de la imágen</h2>
-          <input
-            value={imageName}
-            onChange={(e) => setImageName(e.target.value)}
-            className="px-4 py-2 bg-white rounded-lg border-2 border-black text-black w-32"
-            type="text"
-          ></input>
-        </article>
-        <article className="col-span-1 w-[425px] h-32 cursor-pointer flex justify-center items-center gap-5 bg-black/30 border-2 border-white rounded-lg overflow-hidden">
-          <h2>Descripción de la prenda</h2>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="h-28 px-4 py-2 bg-white rounded-lg border-2 border-black text-black"
-          ></textarea>
-        </article>
-        <article className="col-span-1 w-[425px] h-32 cursor-pointer flex flex-col gap-2 justify-center items-center bg-black/30 border-2 border-white rounded-lg overflow-hidden">
-          <h2>Stock por tallas</h2>
-          <div className="grid gap-1 grid-cols-5">
-            <div className="col-span-1 flex gap-1 justify-center items-center">
-              <label htmlFor="tallaXS">XS:</label>
-              <input
-                value={stockXS}
-                onChange={(e) => setStockXS(e.target.value)}
-                name="tallaXS"
-                className="px-1 py-1 p-1 bg-white rounded-lg border-2 border-black text-black w-12"
-                type="text"
-              ></input>
+              {items.map((item) => (
+                <option
+                  key={item.item_id}
+                  value={item.item_name}
+                  style={{
+                    textOverflow: "ellipsis",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {item.item_name}
+                </option>
+              ))}
+            </select>
+          </article>
+          <article className="col-span-1 w-[425px] h-32 cursor-pointer flex justify-center items-center gap-5 bg-black/30 border-2 border-white rounded-lg overflow-hidden">
+            <h2>Nombre de la imágen</h2>
+            <input
+              value={imageName}
+              onChange={(e) => setImageName(e.target.value)}
+              className="px-4 py-2 bg-white rounded-lg border-2 border-black text-black w-32"
+              type="text"
+            ></input>
+          </article>
+          <article className="col-span-1 w-[425px] h-32 cursor-pointer flex justify-center items-center gap-5 bg-black/30 border-2 border-white rounded-lg overflow-hidden">
+            <h2>Descripción de la prenda</h2>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="h-28 px-4 py-2 bg-white rounded-lg border-2 border-black text-black"
+            ></textarea>
+          </article>
+          <article className="col-span-1 w-[425px] h-32 cursor-pointer flex flex-col gap-2 justify-center items-center bg-black/30 border-2 border-white rounded-lg overflow-hidden">
+            <h2>Stock por tallas</h2>
+            <div className="grid gap-1 grid-cols-5">
+              <div className="col-span-1 flex gap-1 justify-center items-center">
+                <label htmlFor="tallaXS">XS:</label>
+                <input
+                  value={stockXS}
+                  onChange={(e) => setStockXS(e.target.value)}
+                  name="tallaXS"
+                  className="px-1 py-1 p-1 bg-white rounded-lg border-2 border-black text-black w-12"
+                  type="text"
+                ></input>
+              </div>
+              <div className="col-span-1 flex gap-1 justify-center items-center">
+                <label htmlFor="tallaS">S:</label>
+                <input
+                  value={stockS}
+                  onChange={(e) => setStockS(e.target.value)}
+                  name="tallaS"
+                  className="px-1 py-1 p-1 bg-white rounded-lg border-2 border-black text-black w-12"
+                  type="text"
+                ></input>
+              </div>
+              <div className="col-span-1 flex gap-1 justify-center items-center">
+                <label htmlFor="tallaM">M:</label>
+                <input
+                  value={stockM}
+                  onChange={(e) => setStockM(e.target.value)}
+                  name="tallaM"
+                  className="px-1 py-1 p-1 bg-white rounded-lg border-2 border-black text-black w-12"
+                  type="text"
+                ></input>
+              </div>
+              <div className="col-span-1 flex gap-1 justify-center items-center">
+                <label htmlFor="tallaL">L:</label>
+                <input
+                  value={stockL}
+                  onChange={(e) => setStockL(e.target.value)}
+                  name="tallaL"
+                  className="px-1 py-1 p-1 bg-white rounded-lg border-2 border-black text-black w-12"
+                  type="text"
+                ></input>
+              </div>
+              <div className="col-span-1 flex gap-1 justify-center items-center">
+                <label htmlFor="tallaXL">XL:</label>
+                <input
+                  value={stockXL}
+                  onChange={(e) => setStockXL(e.target.value)}
+                  name="tallaXL"
+                  className="px-1 py-1 p-1 bg-white rounded-lg border-2 border-black text-black w-12"
+                  type="text"
+                ></input>
+              </div>
             </div>
-            <div className="col-span-1 flex gap-1 justify-center items-center">
-              <label htmlFor="tallaS">S:</label>
-              <input
-                value={stockS}
-                onChange={(e) => setStockS(e.target.value)}
-                name="tallaS"
-                className="px-1 py-1 p-1 bg-white rounded-lg border-2 border-black text-black w-12"
-                type="text"
-              ></input>
-            </div>
-            <div className="col-span-1 flex gap-1 justify-center items-center">
-              <label htmlFor="tallaM">M:</label>
-              <input
-                value={stockM}
-                onChange={(e) => setStockM(e.target.value)}
-                name="tallaM"
-                className="px-1 py-1 p-1 bg-white rounded-lg border-2 border-black text-black w-12"
-                type="text"
-              ></input>
-            </div>
-            <div className="col-span-1 flex gap-1 justify-center items-center">
-              <label htmlFor="tallaL">L:</label>
-              <input
-                value={stockL}
-                onChange={(e) => setStockL(e.target.value)}
-                name="tallaL"
-                className="px-1 py-1 p-1 bg-white rounded-lg border-2 border-black text-black w-12"
-                type="text"
-              ></input>
-            </div>
-            <div className="col-span-1 flex gap-1 justify-center items-center">
-              <label htmlFor="tallaXL">XL:</label>
-              <input
-                value={stockXL}
-                onChange={(e) => setStockXL(e.target.value)}
-                name="tallaXL"
-                className="px-1 py-1 p-1 bg-white rounded-lg border-2 border-black text-black w-12"
-                type="text"
-              ></input>
-            </div>
-          </div>
-        </article>
-        <article className="col-span-1 w-[425px] h-32 cursor-pointer flex justify-center items-center gap-5 bg-black/30 border-2 border-white rounded-lg overflow-hidden">
-          <h2>Precio de la prenda</h2>
-          <input
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            className="px-4 py-2 bg-white rounded-lg border-2 border-black text-black w-20"
-            type="text"
-          ></input>
-        </article>
-        <article className="col-span-1 w-[425px] h-32 cursor-pointer flex justify-center items-center gap-5 bg-black/30 border-2 border-white rounded-lg overflow-hidden">
-          <h2>Colección de la prenda</h2>
-          <input
-            value={collection}
-            onChange={(e) => setCollection(e.target.value)}
-            name="collection"
-            className="px-4 py-2 bg-white rounded-lg border-2 border-black text-black"
-            type="text"
-          ></input>
-        </article>
-      </div>
-      <button
-        className="bg-green-500 border-2 border-white px-4 py-2 rounded-lg hover:bg-green-600 transition-all duration-300 ease-in-out"
-        onClick={handleUpdate}
-      >
-        Crear
-      </button>
+          </article>
+          <article className="col-span-1 w-[425px] h-32 cursor-pointer flex justify-center items-center gap-5 bg-black/30 border-2 border-white rounded-lg overflow-hidden">
+            <h2>Precio de la prenda</h2>
+            <input
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              className="px-4 py-2 bg-white rounded-lg border-2 border-black text-black w-20"
+              type="text"
+            ></input>
+          </article>
+          <article className="col-span-1 w-[425px] h-32 cursor-pointer flex justify-center items-center gap-5 bg-black/30 border-2 border-white rounded-lg overflow-hidden">
+            <h2>Colección de la prenda</h2>
+            <input
+              value={collection}
+              onChange={(e) => setCollection(e.target.value)}
+              name="collection"
+              className="px-4 py-2 bg-white rounded-lg border-2 border-black text-black"
+              type="text"
+            ></input>
+          </article>
+        </div>
+        <button
+          className="bg-blue-500 border-2 border-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all duration-300 ease-in-out"
+          onClick={handleUpdate}
+        >
+          Actualizar
+        </button>
+      </section>
       <Toaster position="top-right" expand={true} richColors theme="dark" />
     </>
   );

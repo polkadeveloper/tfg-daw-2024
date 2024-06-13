@@ -27,40 +27,44 @@ function DeleteAdminPanel(props: any) {
 
   return (
     <>
-      <button
-        className="absolute top-5 left-5"
-        onClick={() => props.setCurrentPanel(null)}
-      >
-        Volver atrás
-      </button>
-
-      <section className="flex justify-center items-center gap-10">
-        <section
-          onClick={() => setShowDeleteItemsComponent(true)}
-          className="relative z-0 w-56 h-56 cursor-pointer flex justify-center items-center border-2 border-white rounded-lg overflow-hidden [&>article]:hover:scale-125 [&>div]:hover:bg-black/30"
+      <section className="min-h-[70vh] relative px-5 py-2 w-full flex flex-col gap-5 justify-center items-center font-cabinetGroteskBold">
+        <button
+          className="absolute top-5 left-5"
+          onClick={() => props.setCurrentPanel(null)}
         >
-          <article
-            style={{ backgroundImage: "url(img/fondo-borrar-camisetas.jpg)" }}
-            className="absolute top-0 left-0 z-10 w-full h-full bg-center bg-cover bg-no-repeat overflow-hidden duration-500 transition-all ease-in-out"
-          ></article>
-          <div className="absolute bottom-0 top-0 z-10 h-full w-full bg-gradient-to-b from-transparent from-40% via-black/60 to-black/90 duration-300 transition-all ease-in-out"></div>
-          <p className="absolute bottom-3 z-20 text-base uppercase font-cabinetGroteskBlack text-white tracking-wider text-center">
-            Eliminar prendas
-          </p>
-        </section>
+          Volver atrás
+        </button>
 
-        <section
-          onClick={() => setShowDeleteCollectionsComponent(true)}
-          className="relative z-0 w-56 h-56 cursor-pointer flex justify-center items-center border-2 border-white rounded-lg overflow-hidden [&>article]:hover:scale-125 [&>div]:hover:bg-black/30"
-        >
-          <article
-            style={{ backgroundImage: "url(img/fondo-borrar-colecciones.jpg)" }}
-            className="absolute top-0 left-0 z-10 w-full h-full bg-center bg-cover bg-no-repeat overflow-hidden duration-500 transition-all ease-in-out"
-          ></article>
-          <div className="absolute bottom-0 top-0 z-10 h-full w-full bg-gradient-to-b from-transparent from-40% via-black/60 to-black/90 duration-300 transition-all ease-in-out"></div>
-          <p className="absolute bottom-3 z-20 text-base uppercase font-cabinetGroteskBlack text-white tracking-wider text-center">
-            Eliminar colecciones
-          </p>
+        <section className="flex justify-center items-center gap-10">
+          <section
+            onClick={() => setShowDeleteItemsComponent(true)}
+            className="relative z-0 w-56 h-56 cursor-pointer flex justify-center items-center border-2 border-white rounded-lg overflow-hidden [&>article]:hover:scale-125 [&>div]:hover:bg-black/30"
+          >
+            <article
+              style={{ backgroundImage: "url(img/fondo-borrar-camisetas.jpg)" }}
+              className="absolute top-0 left-0 z-10 w-full h-full bg-center bg-cover bg-no-repeat overflow-hidden duration-500 transition-all ease-in-out"
+            ></article>
+            <div className="absolute bottom-0 top-0 z-10 h-full w-full bg-gradient-to-b from-transparent from-40% via-black/60 to-black/90 duration-300 transition-all ease-in-out"></div>
+            <p className="absolute bottom-3 z-20 text-base uppercase font-cabinetGroteskBlack text-white tracking-wider text-center">
+              Eliminar prendas
+            </p>
+          </section>
+
+          <section
+            onClick={() => setShowDeleteCollectionsComponent(true)}
+            className="relative z-0 w-56 h-56 cursor-pointer flex justify-center items-center border-2 border-white rounded-lg overflow-hidden [&>article]:hover:scale-125 [&>div]:hover:bg-black/30"
+          >
+            <article
+              style={{
+                backgroundImage: "url(img/fondo-borrar-colecciones.jpg)",
+              }}
+              className="absolute top-0 left-0 z-10 w-full h-full bg-center bg-cover bg-no-repeat overflow-hidden duration-500 transition-all ease-in-out"
+            ></article>
+            <div className="absolute bottom-0 top-0 z-10 h-full w-full bg-gradient-to-b from-transparent from-40% via-black/60 to-black/90 duration-300 transition-all ease-in-out"></div>
+            <p className="absolute bottom-3 z-20 text-base uppercase font-cabinetGroteskBlack text-white tracking-wider text-center">
+              Eliminar colecciones
+            </p>
+          </section>
         </section>
       </section>
     </>
@@ -107,34 +111,36 @@ function DeleteItemsDeletePanel(props: any) {
 
   return (
     <>
-      <button
-        className="absolute top-5 left-5"
-        onClick={() => props.setShowDeleteItemsComponent(false)}
-      >
-        Volver atrás
-      </button>
-      <h1 className="text-3xl text-center font-cabinetGroteskBold">
-        Eliminar prendas
-      </h1>
-      <article className="w-[450px] h-32 cursor-pointer flex justify-center items-center gap-5 bg-black/30 border-2 border-white rounded-lg overflow-hidden">
-        <select
-          className="px-4 py-2 border-2 border-white rounded-lg"
-          value={selectedItem}
-          onChange={(e) => setSelectedItem(e.target.value)}
-        >
-          {items.map((item) => (
-            <option key={item.item_id} value={item.item_name}>
-              {item.item_name}
-            </option>
-          ))}
-        </select>
+      <section className="min-h-[70vh] relative px-5 py-2 w-full flex flex-col gap-5 justify-center items-center font-cabinetGroteskBold">
         <button
-          className="bg-red-500 border-2 border-white px-4 py-2 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out"
-          onClick={handleDelete}
+          className="absolute top-5 left-5"
+          onClick={() => props.setShowDeleteItemsComponent(false)}
         >
-          Eliminar
+          Volver atrás
         </button>
-      </article>
+        <h1 className="text-3xl text-center font-cabinetGroteskBold">
+          Eliminar prendas
+        </h1>
+        <article className="w-[450px] h-32 cursor-pointer flex justify-center items-center gap-5 bg-black/30 border-2 border-white rounded-lg overflow-hidden">
+          <select
+            className="px-4 py-2 border-2 border-white rounded-lg"
+            value={selectedItem}
+            onChange={(e) => setSelectedItem(e.target.value)}
+          >
+            {items.map((item) => (
+              <option key={item.item_id} value={item.item_name}>
+                {item.item_name}
+              </option>
+            ))}
+          </select>
+          <button
+            className="bg-red-500 border-2 border-white px-4 py-2 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out"
+            onClick={handleDelete}
+          >
+            Eliminar
+          </button>
+        </article>
+      </section>
       <Toaster position="top-right" expand={true} richColors theme="dark" />
     </>
   );
@@ -180,37 +186,39 @@ function DeleteCollectionsDeletePanel(props: any) {
 
   return (
     <>
-      <button
-        className="absolute top-5 left-5"
-        onClick={() => props.setShowDeleteCollectionsComponent(false)}
-      >
-        Volver atrás
-      </button>
-      <h1 className="text-3xl text-center font-cabinetGroteskBold">
-        Eliminar colecciones
-      </h1>
-      <article className="w-[450px] h-32 cursor-pointer flex justify-center items-center gap-5 bg-black/30 border-2 border-white rounded-lg overflow-hidden">
-        <select
-          className="px-4 py-2 border-2 border-white rounded-lg"
-          value={selectedItem}
-          onChange={(e) => setSelectedItem(e.target.value)}
-        >
-          {items.map((collection) => (
-            <option
-              key={collection.collection_id}
-              value={collection.collection_name}
-            >
-              {collection.collection_name}
-            </option>
-          ))}
-        </select>
+      <section className="min-h-[70vh] relative px-5 py-2 w-full flex flex-col gap-5 justify-center items-center font-cabinetGroteskBold">
         <button
-          className="bg-red-500 border-2 border-white px-4 py-2 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out"
-          onClick={handleDelete}
+          className="absolute top-5 left-5"
+          onClick={() => props.setShowDeleteCollectionsComponent(false)}
         >
-          Eliminar
+          Volver atrás
         </button>
-      </article>
+        <h1 className="text-3xl text-center font-cabinetGroteskBold">
+          Eliminar colecciones
+        </h1>
+        <article className="w-[450px] h-32 cursor-pointer flex justify-center items-center gap-5 bg-black/30 border-2 border-white rounded-lg overflow-hidden">
+          <select
+            className="px-4 py-2 border-2 border-white rounded-lg"
+            value={selectedItem}
+            onChange={(e) => setSelectedItem(e.target.value)}
+          >
+            {items.map((collection) => (
+              <option
+                key={collection.collection_id}
+                value={collection.collection_name}
+              >
+                {collection.collection_name}
+              </option>
+            ))}
+          </select>
+          <button
+            className="bg-red-500 border-2 border-white px-4 py-2 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out"
+            onClick={handleDelete}
+          >
+            Eliminar
+          </button>
+        </article>
+      </section>
       <Toaster position="top-right" expand={true} richColors theme="dark" />
     </>
   );
