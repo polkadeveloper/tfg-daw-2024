@@ -13,8 +13,8 @@ const response = await fetch("http://localhost:4321/api/items");
 const data = await response.json();
 
 // Creamos un array para guardar las URL de las imágenes
-let imagenesFront: string[] = [];
-let imagenesBack: string[] = [];
+const imagenesFront: string[] = [];
+const imagenesBack: string[] = [];
 
 // Añadimos todas las imágenes al array 'imagenes'
 data.camisetas.map((camiseta) => {

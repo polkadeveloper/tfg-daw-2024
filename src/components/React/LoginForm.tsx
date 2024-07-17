@@ -3,7 +3,6 @@ import React, { useRef, useState, useEffect } from "react";
 import { Label } from "@/components/React/ui/label";
 import { Input } from "@/components/React/ui/input";
 import { cn } from "@/utils/cn";
-import { IconBrandGoogle } from "@tabler/icons-react";
 import { Toaster, toast } from "sonner";
 import "@/styles/sonner.css";
 

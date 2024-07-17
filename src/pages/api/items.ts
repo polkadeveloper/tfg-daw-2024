@@ -12,10 +12,10 @@ export const connection = await mysql.createConnection({
 
 // Creamos la función GET que se encargará de obtener los datos de la base de datos y devolverlos
 export async function GET(context: APIContext) {
-  let imagenes: string[] = [];
+  const imagenes: string[] = [];
   try {
     const [rows, fields] = await connection.execute(
-      `SELECT * FROM items`,
+      "SELECT * FROM items",
     );
     // Comprobamos si 'rows' es un array antes de intentar llamar a 'map' en él
     if (Array.isArray(rows)) {
